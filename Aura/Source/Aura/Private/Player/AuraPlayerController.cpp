@@ -25,9 +25,10 @@ void AAuraPlayerController::BeginPlay()
 
 	UEnhancedInputLocalPlayerSubsystem* Subsystem =
 		ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(Subsystem);
-
-	Subsystem->AddMappingContext(AuraContext, 0);
+	if (Subsystem)
+	{
+		Subsystem->AddMappingContext(AuraContext, 0);
+	}
 
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
@@ -76,24 +77,24 @@ void AAuraPlayerController::CursorTrace()
 	ThisActor = Cast<IEnemyInterface>(CursorHit.GetActor());
 
 	/*
-	* 
+	*
 	*	Line trace from cursor. There are several scenarios
-	* 
+	*
 	* A. LastActor is null && ThisActor is null --> Simple scenario. Whatever we got last frame it was not an enemy interface, same for this frame
 	*	- Do nothing
-	* 
+	*
 	* B. LastActor is null && ThisActor is valid --> We hit an EnemyInterface this frame
 	*	- Highlight ThisActor
-	* 
+	*
 	* C. LastActor is valid && ThisActor is null --> We hovered an EnemyInterface but we stopped this frame
 	*	- UnHilight LastActor
-	* 
+	*
 	* D. Both Actors are valid, but LastActor != ThisActor --> We are switching enemies
 	*	- UnHilight last, Highlight this
-	* 
+	*
 	* E. Both actors are valid, and are the same actor --> We are hovering over the same enemy as last frame
 	*	- Skip highlighting, do nothing
-	* 
+	*
 	*/
 
 	if (LastActor == nullptr)
