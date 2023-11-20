@@ -7,6 +7,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/AudioComponent.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "Aura/Aura.h"
 
 AAuraProjectile::AAuraProjectile()
@@ -57,6 +59,13 @@ void AAuraProjectile::Destroyed()
 
 		if (HasAuthority())
 		{
+
+			if (UAbilitySystemComponent* TargetASC = 
+				UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+			{
+				TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+			}
+
 			Destroy();
 		}
 		else
