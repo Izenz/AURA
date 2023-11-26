@@ -1,0 +1,38 @@
+[
+	{
+		"Name": "Attributes.Primary.Lethality",
+		"1": 13,
+		"5": 15,
+		"10": 17,
+		"15": 23,
+		"20": 27,
+		"40": 33
+	},
+	{
+		"Name": "Attributes.Primary.Intelligence",
+		"1": 6,
+		"5": 12,
+		"10": 15,
+		"15": 17,
+		"20": 24,
+		"40": 32
+	},
+	{
+		"Name": "Attributes.Primary.Vigor",
+		"1": 3,
+		"5": 6,
+		"10": 9,
+		"15": 14,
+		"20": 18,
+		"40": 26
+	},
+	{
+		"Name": "Attributes.Primary.Agility",
+		"1": 9,
+		"5": 11,
+		"10": 15,
+		"15": 17,
+		"20": 26,
+		"40": 36
+	}
+]
