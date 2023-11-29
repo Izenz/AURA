@@ -3,12 +3,14 @@
 
 #include "Character/AuraEnemy.h"
 
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
 #include "UI/Widget/AuraUserWidget.h"
 #include "Components/WidgetComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AAuraEnemy::AAuraEnemy()
 {
@@ -39,12 +41,19 @@ void AAuraEnemy::UnHighlightActor()
 	Weapon->SetRenderCustomDepth(false);
 }
 
+void AAuraEnemy::StaggerTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	bStaggered = NewCount > 0;
+	GetCharacterMovement()->MaxWalkSpeed = bStaggered ? 0 : BaseWalkSpeed;
+}
+
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	InitAbilityActorInfo();
-
+	UAuraAbilitySystemLibrary::GetStartupAbilities(this, AbilitySystemComponent);
+	
 	if (UAuraUserWidget* AuraUserWidget = Cast<UAuraUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
 		AuraUserWidget->SetWidgetController(this);
@@ -64,6 +73,11 @@ void AAuraEnemy::BeginPlay()
 				{
 					OnMaxHealthChanged.Broadcast(Data.NewValue);
 				});
+		AbilitySystemComponent
+			->RegisterGameplayTagEvent(
+				FAuraGameplayTags::Get().Effects_Stagger,
+				EGameplayTagEventType::NewOrRemoved)
+					.AddUObject(this, &AAuraEnemy::StaggerTagChanged);
 
 		OnHealthChanged.Broadcast(AuraAS->GetHealth());
 		OnMaxHealthChanged.Broadcast(AuraAS->GetMaxHealth());

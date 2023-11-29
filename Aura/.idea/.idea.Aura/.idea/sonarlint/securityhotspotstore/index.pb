@@ -35,3 +35,7 @@ s
 CSource/Aura/Private/AbilitySystem/Abilities/AuraGameplayAbility.cpp,c\8\c8974d1857db37bf4360e9eda996a6b0c9d5e63c
 p
 @Source/Aura/Public/AbilitySystem/Abilities/AuraGameplayAbility.h,e\1\e1b2fd74b483ec44ba8e9d74bb564223172a656d
+c
+3Source/Aura/Private/Character/AuraCharacterBase.cpp,9\d\9d2c91a661f447945a4bcc46c61ff9888f609383
+`
+0Source/Aura/Public/Interaction/CombatInterface.h,5\9\5933d3c9592baa694d2e0ac2e32bae8e1eed6e07

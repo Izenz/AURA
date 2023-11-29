@@ -42,6 +42,7 @@ public:
 
 	FGameplayTag Damage;
 
+	FGameplayTag Effects_Stagger;
 private:
 	static FAuraGameplayTags Instance;
 

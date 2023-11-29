@@ -106,7 +106,10 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 		UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Damage"),
 			FString("Damage."));
-
+	Instance.Effects_Stagger =
+		UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Effects.Stagger"),
+			FString("Tag granted when hit reacting."));
 	
 }
 
