@@ -32,4 +32,6 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UAnimMontage* GetStaggerMontage();
+
+	virtual void Die() = 0;
 };

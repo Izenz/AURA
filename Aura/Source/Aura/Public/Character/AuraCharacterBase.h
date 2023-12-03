@@ -25,6 +25,11 @@ public:
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; };
 
 	virtual UAnimMontage* GetStaggerMontage_Implementation() override;
+	virtual void Die() override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void MulticastHandleDeath();
+	
 protected:
 	virtual void BeginPlay() override;
 
