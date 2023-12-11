@@ -4,6 +4,7 @@
 #include "AbilitySystem/ExecCalc/ExecCalc_Damage.h"
 
 #include "AbilitySystemComponent.h"
+#include "AuraAbilityTypes.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
@@ -16,6 +17,9 @@ struct AuraDamageStatics
 	DECLARE_ATTRIBUTE_CAPTUREDEF(Evasion);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(ArmorPen);
 	DECLARE_ATTRIBUTE_CAPTUREDEF(CritChance);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(CritDamage);
+	DECLARE_ATTRIBUTE_CAPTUREDEF(CritRes);
+
 	AuraDamageStatics()
 	{
 		/*
@@ -26,6 +30,8 @@ struct AuraDamageStatics
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet, Evasion, Target, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet, ArmorPen, Source, false);
 		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet, CritChance, Source, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet, CritDamage, Source, false);
+		DEFINE_ATTRIBUTE_CAPTUREDEF(UAuraAttributeSet, CritRes, Target, false);
 	}
 };
 
@@ -44,14 +50,14 @@ UExecCalc_Damage::UExecCalc_Damage()
 }
 
 void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
-	FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
+                                              FGameplayEffectCustomExecutionOutput& OutExecutionOutput) const
 {
 	const UAbilitySystemComponent* SourceASC = ExecutionParams.GetSourceAbilitySystemComponent();
 	const UAbilitySystemComponent* TargetASC = ExecutionParams.GetTargetAbilitySystemComponent();
 
 	const AActor* SourceAvatar = SourceASC ? SourceASC->GetAvatarActor() : nullptr;
 	const AActor* TargetAvatar = TargetASC ? TargetASC->GetAvatarActor() : nullptr;
-	
+
 	const ICombatInterface* SourceCombatInterface = Cast<ICombatInterface>(SourceAvatar);
 	const ICombatInterface* TargetCombatInterface = Cast<ICombatInterface>(TargetAvatar);
 
@@ -68,34 +74,70 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 
 	/* Evasion Chance Modifier */
 	float TargetEvasionChance = 0.f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().EvasionDef, EvaluationParams, TargetEvasionChance);
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().EvasionDef, EvaluationParams,
+	                                                           TargetEvasionChance);
 	TargetEvasionChance = FMath::Max<float>(0.f, TargetEvasionChance);
-	
-	if(FMath::RandRange(1, 100) < TargetEvasionChance)
-	{
-		Damage *= 0.2f;
-	}
 
+	FGameplayEffectContextHandle EffectContextHandle = Spec.GetContext();
+
+	const bool bIsEvadedHit = FMath::RandRange(1, 100) < TargetEvasionChance;
+
+	UAuraAbilitySystemLibrary::SetIsEvadedHit(EffectContextHandle, bIsEvadedHit);
+	Damage = bIsEvadedHit ? Damage * 0.2f : Damage;
+	
 	/* Defense Penetration Modifier */
 	float TargetArmor = 0.f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().ArmorDef, EvaluationParams, TargetArmor);
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().ArmorDef, EvaluationParams,
+	                                                           TargetArmor);
 	TargetEvasionChance = FMath::Max<float>(0.f, TargetArmor);
 
 	float SourceArmorPen = 0.f;
-	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().ArmorPenDef, EvaluationParams, SourceArmorPen);
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().ArmorPenDef, EvaluationParams,
+	                                                           SourceArmorPen);
 	TargetEvasionChance = FMath::Max<float>(0.f, SourceArmorPen);
 
 	const UCharacterClassInfo* CharacterClassInfo = UAuraAbilitySystemLibrary::GetCharacterClassInfo(SourceAvatar);
-	const FRealCurve* ArmorPenCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("ArmorPen"), FString());
+	const FRealCurve* ArmorPenCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(
+		FName("ArmorPen"), FString());
 	const float ArmorPenCoefficient = ArmorPenCurve->Eval(SourceCombatInterface->GetPlayerLevel());
-	
-	const float EffectiveArmor = TargetArmor * FMath::Max<float>( 0.f, 100 - SourceArmorPen * ArmorPenCoefficient ) / 100.f;
-	
-	const FRealCurve* EffectiveArmorCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(FName("EffectiveArmor"), FString());
+
+	const float EffectiveArmor = TargetArmor * FMath::Max<float>(0.f, 100 - SourceArmorPen * ArmorPenCoefficient) /
+		100.f;
+
+	const FRealCurve* EffectiveArmorCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(
+		FName("EffectiveArmor"), FString());
 	const float EffectiveArmorCoefficient = EffectiveArmorCurve->Eval(TargetCombatInterface->GetPlayerLevel());
-	
-	Damage *= ( 100 - EffectiveArmor * EffectiveArmorCoefficient ) / 100.f;
-	
-	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(), EGameplayModOp::Additive, Damage);
+
+	Damage *= (100 - EffectiveArmor * EffectiveArmorCoefficient) / 100.f;
+
+	/* Critical Hit Modifier */
+
+	float SourceCritChance = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().CritChanceDef, EvaluationParams,
+	                                                           SourceCritChance);
+	SourceCritChance = FMath::Max<float>(0.f, SourceCritChance);
+
+	float TargetCritRes = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().CritResDef, EvaluationParams,
+	                                                           TargetCritRes);
+	TargetCritRes = FMath::Max<float>(0.f, TargetCritRes);
+
+	float SourceCritDamage = 0.f;
+	ExecutionParams.AttemptCalculateCapturedAttributeMagnitude(GetDamageStatics().CritDamageDef, EvaluationParams,
+	                                                           SourceCritDamage);
+	SourceCritDamage = FMath::Max<float>(0.f, SourceCritDamage);
+
+	const FRealCurve* CritResCoefficientCurve = CharacterClassInfo->DamageCalculationCoefficients->FindCurve(
+		FName("CritResCoefficient"), FString());
+	const float CritResCoefficient = CritResCoefficientCurve->Eval(TargetCombatInterface->GetPlayerLevel());
+
+	const float EffectiveCritChance = SourceCritChance - TargetCritRes * CritResCoefficient;
+	const bool bIsCriticalHit = FMath::RandRange(1, 100) < EffectiveCritChance;
+
+	UAuraAbilitySystemLibrary::SetIsCriticalHit(EffectContextHandle, bIsCriticalHit);
+	Damage = bIsCriticalHit ? 1.5f * SourceCritDamage * Damage : Damage;
+
+	const FGameplayModifierEvaluatedData EvaluatedData(UAuraAttributeSet::GetIncomingDamageAttribute(),
+	                                                   EGameplayModOp::Additive, Damage);
 	OutExecutionOutput.AddOutputModifier(EvaluatedData);
 }

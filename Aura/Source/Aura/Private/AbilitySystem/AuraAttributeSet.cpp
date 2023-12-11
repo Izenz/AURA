@@ -7,6 +7,7 @@
 #include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
 #include "AuraGameplayTags.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerController.h"
@@ -111,13 +112,14 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
 
-			ShowFloatingText(Props, LocalIncomingDamage);
-			
+			const bool bEvaded = UAuraAbilitySystemLibrary::IsEvadedHit(Props.EffectContextHandle);
+			const bool bCritical = UAuraAbilitySystemLibrary::IsEvadedHit(Props.EffectContextHandle);
+			ShowFloatingText(Props, LocalIncomingDamage, bEvaded, bCritical);
 		}
 	}
 }
 
-void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage) const
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage, bool bIsEvadedHit, bool bIsCriticalHit) const
 {
 	if(Props.SourceCharacter != Props.TargetCharacter)
 	{
