@@ -113,7 +113,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 			}
 
 			const bool bEvaded = UAuraAbilitySystemLibrary::IsEvadedHit(Props.EffectContextHandle);
-			const bool bCritical = UAuraAbilitySystemLibrary::IsEvadedHit(Props.EffectContextHandle);
+			const bool bCritical = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
 			ShowFloatingText(Props, LocalIncomingDamage, bEvaded, bCritical);
 		}
 	}
@@ -125,7 +125,7 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 	{
 		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
 		{
-			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bIsEvadedHit, bIsCriticalHit);
 		}
 	}
 }

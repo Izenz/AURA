@@ -47,6 +47,8 @@ UExecCalc_Damage::UExecCalc_Damage()
 	RelevantAttributesToCapture.Add(GetDamageStatics().EvasionDef);
 	RelevantAttributesToCapture.Add(GetDamageStatics().ArmorPenDef);
 	RelevantAttributesToCapture.Add(GetDamageStatics().CritChanceDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().CritDamageDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().CritResDef);
 }
 
 void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
