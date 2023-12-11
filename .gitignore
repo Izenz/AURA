@@ -16,3 +16,4 @@ Build
 *.xcodeproj
 *.xcworkspace
 *.htm
+*.DotSettings.user
