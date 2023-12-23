@@ -24,7 +24,8 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
 	{
 		const FVector SocketLocation = CombatInterface->GetCombatSocketLocation();
 		FRotator Rotation = (TargetLocation - SocketLocation).Rotation();
-		Rotation.Pitch = 0.f;
+		// TODO: Find a better fix to compensate for server/client discrepancy on weapon socket than to comment out next line
+		// Rotation.Pitch = 0.f;
 
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);

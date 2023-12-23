@@ -31,7 +31,8 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 
 void AAuraPlayerController::ShowDamageNumber_Implementation(float Damage, ACharacter* TargetCharacter)
 {
-	if(IsValid(TargetCharacter) && DamageTextComponentClass)
+	// TODO: Consider removing the last IsLocalController() check if you want to show numbers in more clients other than the one causing damage.
+	if(IsValid(TargetCharacter) && DamageTextComponentClass && IsLocalController())
 	{
 		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter, DamageTextComponentClass);
 		DamageText->RegisterComponent();

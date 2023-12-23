@@ -123,7 +123,10 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 {
 	if(Props.SourceCharacter != Props.TargetCharacter)
 	{
-		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
+		// TODO: Comment below.
+		/* The controller that we call ShowDamageNumber on is now the one that throws the firball but we could have a Settings menu where we specify if we want to see
+		 * Damage numbers from other playes or if we dont want to see any numbers at all. See ShowDamageNumber_Implementation for more changes. */
+		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
 		{
 			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
 		}
