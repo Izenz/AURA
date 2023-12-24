@@ -29,7 +29,7 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 	AutoRun();
 }
 
-void AAuraPlayerController::ShowDamageNumber_Implementation(float Damage, ACharacter* TargetCharacter)
+void AAuraPlayerController::ShowDamageNumber_Implementation(float Damage, ACharacter* TargetCharacter, bool bIsEvadedHit, bool bIsCriticalHit)
 {
 	// TODO: Consider removing the last IsLocalController() check if you want to show numbers in more clients other than the one causing damage.
 	if(IsValid(TargetCharacter) && DamageTextComponentClass && IsLocalController())
@@ -38,7 +38,7 @@ void AAuraPlayerController::ShowDamageNumber_Implementation(float Damage, AChara
 		DamageText->RegisterComponent();
 		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
-		DamageText->SetDamageText(Damage);
+		DamageText->SetDamageText(Damage, bIsEvadedHit, bIsCriticalHit);
 	}
 }
 

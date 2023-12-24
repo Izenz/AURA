@@ -47,6 +47,8 @@ UExecCalc_Damage::UExecCalc_Damage()
 	RelevantAttributesToCapture.Add(GetDamageStatics().EvasionDef);
 	RelevantAttributesToCapture.Add(GetDamageStatics().ArmorPenDef);
 	RelevantAttributesToCapture.Add(GetDamageStatics().CritChanceDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().CritDamageDef);
+	RelevantAttributesToCapture.Add(GetDamageStatics().CritResDef);
 }
 
 void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecutionParameters& ExecutionParams,
@@ -70,7 +72,12 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParams.TargetTags = TargetTags;
 
 	/* Get Damage Set by Caller Magnitude */
-	float Damage = Spec.GetSetByCallerMagnitude(FAuraGameplayTags::Get().Damage);
+	float Damage = 0.f;
+	for (const auto& Pair : FAuraGameplayTags::Get().DamageTypesToResistances)
+	{
+		const float DamageTypeValue = Spec.GetSetByCallerMagnitude(Pair.Key);
+		Damage += DamageTypeValue;
+	}
 
 	/* Evasion Chance Modifier */
 	float TargetEvasionChance = 0.f;

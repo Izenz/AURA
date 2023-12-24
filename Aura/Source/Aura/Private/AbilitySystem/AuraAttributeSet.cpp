@@ -113,7 +113,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 			}
 
 			const bool bEvaded = UAuraAbilitySystemLibrary::IsEvadedHit(Props.EffectContextHandle);
-			const bool bCritical = UAuraAbilitySystemLibrary::IsEvadedHit(Props.EffectContextHandle);
+			const bool bCritical = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
 			ShowFloatingText(Props, LocalIncomingDamage, bEvaded, bCritical);
 		}
 	}
@@ -128,7 +128,7 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 		 * Damage numbers from other playes or if we dont want to see any numbers at all. See ShowDamageNumber_Implementation for more changes. */
 		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(Props.SourceCharacter->Controller))
 		{
-			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bIsEvadedHit, bIsCriticalHit);
 		}
 	}
 }
