@@ -43,6 +43,9 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 	AIController = Cast<AAuraAIController>(NewController);
 	AIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	AIController->RunBehaviorTree(BehaviorTree);
+	AIController->GetBlackboardComponent()->SetValueAsBool(FName("Staggered"), false);
+	// TODO: Improve this way to determine whether actor is ranged enemy or not
+	AIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), CharacterClass != ECharacterClass::Warrior);
 }
 
 void AAuraEnemy::HighlightActor()
@@ -70,6 +73,7 @@ void AAuraEnemy::StaggerTagChanged(const FGameplayTag CallbackTag, int32 NewCoun
 {
 	bStaggered = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bStaggered ? 0 : BaseWalkSpeed;
+	AIController->GetBlackboardComponent()->SetValueAsBool(FName("Staggered"), bStaggered);
 }
 
 void AAuraEnemy::BeginPlay()
