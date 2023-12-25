@@ -69,6 +69,16 @@ void AAuraEnemy::Die()
 	Super::Die();
 }
 
+void AAuraEnemy::SetCombatTarget_Implementation(AActor* InCombatTarget)
+{
+	CombatTarget = InCombatTarget;
+}
+
+AActor* AAuraEnemy::GetCombatTarget_Implementation() const
+{
+	return CombatTarget;
+}
+
 void AAuraEnemy::StaggerTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
 	bStaggered = NewCount > 0;
@@ -83,7 +93,7 @@ void AAuraEnemy::BeginPlay()
 	InitAbilityActorInfo();
 	if (HasAuthority())
 	{
-		UAuraAbilitySystemLibrary::GetStartupAbilities(this, AbilitySystemComponent);
+		UAuraAbilitySystemLibrary::GetStartupAbilities(this, AbilitySystemComponent, CharacterClass);
 	}
 
 	if (UAuraUserWidget* AuraUserWidget = Cast<UAuraUserWidget>(HealthBar->GetUserWidgetObject()))

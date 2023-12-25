@@ -144,6 +144,12 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 		UGameplayTagsManager::Get().AddNativeGameplayTag(
 			FName("Effects.Stagger"),
 			FString("Tag granted when hit reacting."));
+
+	/* Abilities */
+	Instance.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Attack"),
+		FString("Attack Ability Tag")
+		);
 	
 }
 
