@@ -99,6 +99,7 @@ TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontages_Implementation()
 
 FTaggedMontage AAuraCharacterBase::GetRandomAttackMontage_Implementation()
 {
+	// TODO: Improve to not get the same random number everytime.
 	const uint32_t RandomMontageIndex = UKismetMathLibrary::RandomInteger(AttackMontages.Num() - 1);
 	return AttackMontages[RandomMontageIndex];
 }
