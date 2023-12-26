@@ -83,7 +83,10 @@ void AAuraEnemy::StaggerTagChanged(const FGameplayTag CallbackTag, int32 NewCoun
 {
 	bStaggered = NewCount > 0;
 	GetCharacterMovement()->MaxWalkSpeed = bStaggered ? 0 : BaseWalkSpeed;
-	AIController->GetBlackboardComponent()->SetValueAsBool(FName("Staggered"), bStaggered);
+	if (AIController && AIController->GetBlackboardComponent())
+	{
+		AIController->GetBlackboardComponent()->SetValueAsBool(FName("Staggered"), bStaggered);
+	}
 }
 
 void AAuraEnemy::BeginPlay()
