@@ -6,6 +6,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Aura/Aura.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AAuraCharacterBase::AAuraCharacterBase()
@@ -75,6 +76,17 @@ bool AAuraCharacterBase::IsDead_Implementation() const
 AActor* AAuraCharacterBase::GetAvatar_Implementation()
 {
 	return this;
+}
+
+TArray<FTaggedMontage> AAuraCharacterBase::GetAttackMontages_Implementation()
+{
+	return AttackMontages;
+}
+
+FTaggedMontage AAuraCharacterBase::GetRandomAttackMontage_Implementation()
+{
+	const uint32_t RandomMontageIndex = UKismetMathLibrary::RandomInteger(AttackMontages.Num() - 1);
+	return AttackMontages[RandomMontageIndex];
 }
 
 void AAuraCharacterBase::InitDefaultAttributes() const
