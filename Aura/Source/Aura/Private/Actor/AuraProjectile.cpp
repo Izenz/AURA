@@ -56,7 +56,7 @@ void AAuraProjectile::Destroyed()
 	{
 		AActor* EffectCauser = DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser();
 	
-		if (DamageEffectSpecHandle.Data.IsValid() && EffectCauser == OtherActor) return;
+		if (!DamageEffectSpecHandle.Data.IsValid() || EffectCauser == OtherActor) return;
 		if (UAuraAbilitySystemLibrary::AreAllies(EffectCauser, OtherActor)) return;
 	
 		if (!bHit)

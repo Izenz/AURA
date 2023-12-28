@@ -44,6 +44,7 @@ void AAuraEnemy::PossessedBy(AController* NewController)
 	AIController->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
 	AIController->RunBehaviorTree(BehaviorTree);
 	AIController->GetBlackboardComponent()->SetValueAsBool(FName("Staggered"), false);
+	AIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), false);
 	// TODO: Improve this way to determine whether actor is ranged enemy or not
 	AIController->GetBlackboardComponent()->SetValueAsBool(FName("RangedAttacker"), CharacterClass != ECharacterClass::Warrior);
 }
@@ -66,6 +67,10 @@ void AAuraEnemy::UnHighlightActor()
 void AAuraEnemy::Die()
 {
 	SetLifeSpan(LifeSpan);
+	if (AIController)
+	{
+		AIController->GetBlackboardComponent()->SetValueAsBool(FName("Dead"), true);
+	}
 	Super::Die();
 }
 
