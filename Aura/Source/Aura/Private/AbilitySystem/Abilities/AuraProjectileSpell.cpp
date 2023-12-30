@@ -19,7 +19,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
 	const bool bHasAuthority = GetAvatarActorFromActorInfo()->HasAuthority();
 	if (!bHasAuthority)	return;
 
-	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), FAuraGameplayTags::Get().Montage_Attack_Weapon);
+	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), FAuraGameplayTags::Get().Combat_Socket_Weapon);
 	FRotator Rotation = (TargetLocation - SocketLocation).Rotation();
 	// TODO: Find a better fix to compensate for server/client discrepancy on weapon socket than to comment out next line
 	// Rotation.Pitch = 0.f;
