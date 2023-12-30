@@ -103,6 +103,11 @@ FTaggedMontage AAuraCharacterBase::GetRandomAttackMontage_Implementation()
 	return AttackMontages[RandomMontageIndex];
 }
 
+UNiagaraSystem* AAuraCharacterBase::GetBloodEffect_Implementation()
+{
+	return BloodFX;
+}
+
 void AAuraCharacterBase::InitDefaultAttributes() const
 {
 	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
