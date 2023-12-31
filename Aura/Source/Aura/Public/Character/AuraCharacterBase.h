@@ -100,6 +100,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UNiagaraSystem* BloodFX;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	USoundBase* DeathSound;
+
 private:
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float EffectLevel) const;
 
