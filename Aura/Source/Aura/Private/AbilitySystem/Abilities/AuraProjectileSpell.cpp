@@ -13,13 +13,11 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
-void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation)
+void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation, const FGameplayTag& SocketTag)
 {
-	
-	const bool bHasAuthority = GetAvatarActorFromActorInfo()->HasAuthority();
-	if (!bHasAuthority)	return;
+	if (!GetAvatarActorFromActorInfo()->HasAuthority())	return;
 
-	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), FAuraGameplayTags::Get().Combat_Socket_Weapon);
+	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), SocketTag);
 	FRotator Rotation = (TargetLocation - SocketLocation).Rotation();
 	// TODO: Find a better fix to compensate for server/client discrepancy on weapon socket than to comment out next line
 	// Rotation.Pitch = 0.f;
