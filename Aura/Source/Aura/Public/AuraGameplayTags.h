@@ -50,6 +50,7 @@ public:
 	FGameplayTag Damage_Arcane;
 
 	FGameplayTag Abilities_Attack;
+	FGameplayTag Abilities_Summon;
 
 	FGameplayTag Combat_Socket_Weapon;
 	FGameplayTag Combat_Socket_RightHand;

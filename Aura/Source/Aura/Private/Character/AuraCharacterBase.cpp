@@ -127,6 +127,16 @@ FTaggedMontage AAuraCharacterBase::GetMontageByTag_Implementation(const FGamepla
 	return FTaggedMontage();
 }
 
+int32 AAuraCharacterBase::GetMinionCount_Implementation()
+{
+	return MinionCount;
+}
+
+void AAuraCharacterBase::SetMinionCount_Implementation(int32 NewCount)
+{
+	MinionCount = NewCount;
+}
+
 void AAuraCharacterBase::InitDefaultAttributes() const
 {
 	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
