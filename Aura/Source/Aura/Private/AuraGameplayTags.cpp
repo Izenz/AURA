@@ -118,6 +118,10 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 		FName("Damage.Arcane"),
 		FString("Arcane Damage Type")
 		);
+	Instance.Damage_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Physical"),
+		FString("Physical Damage Type")
+		);
 
 	/* Resistances */
 	
@@ -133,11 +137,16 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 		FName("Attributes.Resistance.Arcane"),
 		FString("Resistance to Arcane damage")
 		);
+	Instance.Attributes_Resistance_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Resistance.Physical"),
+		FString("Resistance to Physical damage")
+		);
 
 	/* Map of Damage Types to Resistances */
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Fire, Instance.Attributes_Resistance_Fire);
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Lightning, Instance.Attributes_Resistance_Lightning);
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Arcane, Instance.Attributes_Resistance_Arcane);
+	Instance.DamageTypesToResistances.Add(Instance.Damage_Arcane, Instance.Attributes_Resistance_Physical);
 	
 	/* Effects */
 	Instance.Effects_Stagger =

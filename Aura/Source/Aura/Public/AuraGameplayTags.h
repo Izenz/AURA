@@ -36,6 +36,7 @@ public:
 	FGameplayTag Attributes_Resistance_Fire;
 	FGameplayTag Attributes_Resistance_Lightning;
 	FGameplayTag Attributes_Resistance_Arcane;
+	FGameplayTag Attributes_Resistance_Physical;
 
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;
@@ -48,6 +49,7 @@ public:
 	FGameplayTag Damage_Fire;
 	FGameplayTag Damage_Lightning;
 	FGameplayTag Damage_Arcane;
+	FGameplayTag Damage_Physical;
 
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
