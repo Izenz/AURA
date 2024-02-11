@@ -56,6 +56,8 @@ public:
 
 	FGameplayTag Abilities_Fire_FireBolt;
 
+	FGameplayTag Cooldown_Fire_FireBolt;
+
 	FGameplayTag Combat_Socket_Weapon;
 	FGameplayTag Combat_Socket_RightHand;
 	FGameplayTag Combat_Socket_LeftHand;
