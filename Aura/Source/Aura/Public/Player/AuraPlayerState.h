@@ -10,6 +10,8 @@
 class UAbilitySystemComponent;
 class UAttributeSet;
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FOnPlayerStatChanged, int32 /*StatValue*/)
+
 /**
  * 
  */
@@ -24,8 +26,18 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; };
 
+	FOnPlayerStatChanged OnExpChangedDelegate;
+	FOnPlayerStatChanged OnLevelChangedDelegate;
+	
 	FORCEINLINE int32 GetPlayerLevel() const { return Level; };
+	FORCEINLINE int32 GetPlayerExp() const { return Exp; };
 
+	void AddToExp(int32 InExp);
+	void AddToLevel(int32 InLevel);
+
+	void SetExp(int32 InExp);
+	void SetLevel(int32 InLevel);
+	
 protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
@@ -37,6 +49,12 @@ private:
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing=OnRep_Level)
 	int32 Level = 1;
 
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing=OnRep_Level)
+	int32 Exp = 0;
+
 	UFUNCTION()
 	void OnRep_Level(int32 OldLevel);
+
+	UFUNCTION()
+	void OnRep_Exp(int32 OldLevel);
 };
