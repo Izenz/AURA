@@ -137,6 +137,11 @@ void AAuraCharacterBase::SetMinionCount_Implementation(int32 NewCount)
 	MinionCount = NewCount;
 }
 
+ECharacterClass AAuraCharacterBase::GetCharacterClass_Implementation()
+{
+	return CharacterClass;
+}
+
 void AAuraCharacterBase::InitDefaultAttributes() const
 {
 	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);

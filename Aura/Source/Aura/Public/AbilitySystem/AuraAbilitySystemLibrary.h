@@ -54,5 +54,8 @@ public:
 
 	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics")
 	static bool AreAllies(AActor* FirstActor, AActor* OtherActor);
+
+	UFUNCTION()
+	static int32 GetExpRewardForClassAndLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass, int32 CharacterLevel);
 	
 };
