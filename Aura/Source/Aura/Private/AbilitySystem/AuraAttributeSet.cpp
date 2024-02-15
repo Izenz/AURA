@@ -8,6 +8,7 @@
 #include "Net/UnrealNetwork.h"
 #include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
+#include "Aura/AuraLogChannels.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/GameplayStatics.h"
 #include "Player/AuraPlayerController.h"
@@ -110,6 +111,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 				{
 					CombatInterface->Die();
 				}
+				SendExpEvent(Props);
 			}
 			else
 			{
@@ -123,6 +125,12 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 			const bool bCritical = UAuraAbilitySystemLibrary::IsCriticalHit(Props.EffectContextHandle);
 			ShowFloatingText(Props, LocalIncomingDamage, bEvaded, bCritical);
 		}
+	}
+	if (Data.EvaluatedData.Attribute == GetIncomingExpAttribute())
+	{
+		const float LocalIncomingExp = GetIncomingExp();
+		SetIncomingExp(0.f);
+		UE_LOG(LogAura, Log, TEXT("Incoming Exp: %f"), LocalIncomingExp);
 	}
 }
 
@@ -142,6 +150,22 @@ void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float D
 		{
 			PC->ShowDamageNumber(Damage, Props.TargetCharacter, bIsEvadedHit, bIsCriticalHit);
 		}
+	}
+}
+
+void UAuraAttributeSet::SendExpEvent(const FEffectProperties& Props) const
+{
+	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetCharacter))
+	{
+		const int32 TargetLevel = CombatInterface->GetPlayerLevel();
+		const ECharacterClass TargetClass = ICombatInterface::Execute_GetCharacterClass(Props.TargetCharacter);
+		const int32 ExpReward = UAuraAbilitySystemLibrary::GetExpRewardForClassAndLevel(Props.TargetCharacter, TargetClass, TargetLevel);
+
+		const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
+		FGameplayEventData Data;
+		Data.EventTag = GameplayTags.Attributes_Meta_IncomingExp;
+		Data.EventMagnitude = ExpReward;
+		UAbilitySystemBlueprintLibrary::SendGameplayEventToActor(Props.SourceCharacter, GameplayTags.Attributes_Meta_IncomingExp, Data);
 	}
 }
 

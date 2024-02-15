@@ -76,6 +76,15 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 			FString("Maximum value for Mana Points."));
 
 	/*
+	* Meta Attributes 
+	*/
+
+	Instance.Attributes_Meta_IncomingExp =
+		UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("Attributes.Meta.IncomingExp"),
+			FString("Incoming Exp Meta Attribute."));
+	
+	/*
 	* Input Tags 
 	*/
 	Instance.InputTag_LMB =
