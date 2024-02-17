@@ -52,35 +52,33 @@ void AAuraProjectile::Destroyed()
 	Super::Destroyed();
 }
 
-	void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent * OverlappedComponent,
-		AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent * OverlappedComponent,
+	AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	if (!DamageEffectSpecHandle.Data.IsValid() || DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser() == OtherActor) return;
+	if (UAuraAbilitySystemLibrary::AreAllies(DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser(), OtherActor)) return;
+
+	if (!bHit)
 	{
-		AActor* EffectCauser = DamageEffectSpecHandle.Data.Get()->GetContext().GetEffectCauser();
-	
-		if (!DamageEffectSpecHandle.Data.IsValid() || EffectCauser == OtherActor) return;
-		if (UAuraAbilitySystemLibrary::AreAllies(EffectCauser, OtherActor)) return;
-	
-		if (!bHit)
-		{
-			UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-			if (LoopingSoundComponent) LoopingSoundComponent->Stop();
-			bHit = true;
-		}
-
-		if (HasAuthority())
-		{
-
-			if (UAbilitySystemComponent* TargetASC = 
-				UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
-			{
-				TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
-			}
-
-			Destroy();
-		}
-		else
-		{
-			bHit = true;
-		}
+		UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
+		if (LoopingSoundComponent) LoopingSoundComponent->Stop();
+		bHit = true;
 	}
+
+	if (HasAuthority())
+	{
+
+		if (UAbilitySystemComponent* TargetASC = 
+			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor))
+		{
+			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+		}
+
+		Destroy();
+	}
+	else
+	{
+		bHit = true;
+	}
+}

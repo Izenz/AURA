@@ -1,6 +1,5 @@
 // Copyright Joel Herraiz.
 
-
 #include "Character/AuraEnemy.h"
 
 #include "AuraGameplayTags.h"
@@ -62,6 +61,11 @@ void AAuraEnemy::UnHighlightActor()
 {
 	GetMesh()->SetRenderCustomDepth(false);
 	Weapon->SetRenderCustomDepth(false);
+}
+
+int32 AAuraEnemy::GetPlayerLevel_Implementation() const
+{
+	return Level;
 }
 
 void AAuraEnemy::Die()
