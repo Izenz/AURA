@@ -30,7 +30,14 @@ public:
 	/** Player Interface **/
 
 	virtual void AddToExp_Implementation(int32 InExp) override;
+	virtual int32 GetExp_Implementation() const override;
 	virtual void LevelUp_Implementation() override;
+	virtual int32 GetLevelForExp_Implementation(int32 Exp) const override;
+	virtual int32 GetAttributePointsReward_Implementation(int32 Level) const override;
+	virtual int32 GetAbilityPointsReward_Implementation(int32 Level) const override;
+	virtual void AddToPlayerLevel_Implementation(int32 InPlayerLevel) override;
+	virtual void AddToAttributePoints_Implementation(int32 InAttributePoints) override;
+	virtual void AddToAbilityPoints_Implementation(int32 InAbilityPoints) override;
 
 	/** End Player Interface **/
 

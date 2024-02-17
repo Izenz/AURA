@@ -132,8 +132,28 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 		const float LocalIncomingExp = GetIncomingExp();
 		SetIncomingExp(0.f);
 
-		if (Props.SourceCharacter->Implements<UPlayerInterface>())
+		if (Props.SourceCharacter->Implements<UPlayerInterface>() && Props.SourceCharacter->Implements<UCombatInterface>())
 		{
+			const int32 CurrentLevel = ICombatInterface::Execute_GetPlayerLevel(Props.SourceCharacter);
+			const int32 CurrentExp = IPlayerInterface::Execute_GetExp(Props.SourceCharacter);
+
+			const int32 NewLevel = IPlayerInterface::Execute_GetLevelForExp(Props.SourceCharacter, CurrentExp + LocalIncomingExp);
+			const int32 LevelUps = NewLevel - CurrentLevel;
+			if (LevelUps > 0)
+			{
+				const int32 AttributePointsReward = IPlayerInterface::Execute_GetAttributePointsReward(Props.SourceCharacter, CurrentLevel);
+				const int32 AbilityPointsReward = IPlayerInterface::Execute_GetAbilityPointsReward(Props.SourceCharacter, CurrentLevel);
+
+				IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, LevelUps);
+				IPlayerInterface::Execute_AddToAttributePoints(Props.SourceCharacter, AttributePointsReward);
+				IPlayerInterface::Execute_AddToAbilityPoints(Props.SourceCharacter, AbilityPointsReward);
+
+				SetHealth(GetMaxHealth());
+				SetMana(GetMaxMana());
+				
+				IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
+			}
+			
 			IPlayerInterface::Execute_AddToExp(Props.SourceCharacter, LocalIncomingExp);
 		}
 	}

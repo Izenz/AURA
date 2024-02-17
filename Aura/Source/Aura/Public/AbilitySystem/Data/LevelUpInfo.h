@@ -18,7 +18,7 @@ struct FAuraLevelUpInfo
 	uint32 AttributePointAward = 1;
 
 	UPROPERTY(EditDefaultsOnly)
-	uint32 SpellPointReward = 1;
+	uint32 AbilityPointReward = 1;
 };
 
 /**
