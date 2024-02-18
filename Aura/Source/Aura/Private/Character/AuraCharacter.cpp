@@ -123,7 +123,7 @@ void AAuraCharacter::AddToAttributePoints_Implementation(int32 InAttributePoints
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 
-	//TODO Add points to PlayerState
+	AuraPlayerState->AddToAttributePoints(InAttributePoints);
 }
 
 void AAuraCharacter::AddToAbilityPoints_Implementation(int32 InAbilityPoints)
@@ -131,7 +131,7 @@ void AAuraCharacter::AddToAbilityPoints_Implementation(int32 InAbilityPoints)
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 
-	//TODO Add points to PlayerState
+	AuraPlayerState->AddToAbilityPoints(InAbilityPoints);
 }
 
 void AAuraCharacter::InitAbilityActorInfo()
