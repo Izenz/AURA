@@ -41,6 +41,8 @@ public:
 	virtual void AddToPlayerLevel_Implementation(int32 InPlayerLevel) override;
 	virtual void AddToAttributePoints_Implementation(int32 InAttributePoints) override;
 	virtual void AddToAbilityPoints_Implementation(int32 InAbilityPoints) override;
+	virtual int32 GetAttributePoints_Implementation() const override;
+	virtual int32 GetAbilityPoints_Implementation() const override;
 
 	/** End Player Interface **/
 

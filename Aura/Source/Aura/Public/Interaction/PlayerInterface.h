@@ -36,6 +36,12 @@ public:
 	void AddToAbilityPoints(int32 InAbilityPoints);
 
 	UFUNCTION(BlueprintNativeEvent)
+	int32 GetAttributePoints() const;
+
+	UFUNCTION(BlueprintNativeEvent)
+	int32 GetAbilityPoints() const;
+
+	UFUNCTION(BlueprintNativeEvent)
 	int32 GetExp() const;
 
 	UFUNCTION(BlueprintNativeEvent)
