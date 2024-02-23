@@ -74,7 +74,7 @@ protected:
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 
 	template<typename T>
-	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
+	static T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
 
 	void OnExpChanged(int32 NewExp) const;
 	
