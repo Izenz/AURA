@@ -129,7 +129,7 @@ void AAuraEnemy::BeginPlay()
 				});
 		AbilitySystemComponent
 			->RegisterGameplayTagEvent(
-				FAuraGameplayTags::Get().Effects_Stagger,
+				FAuraGameplayTags::Get().Abilities_Stagger,
 				EGameplayTagEventType::NewOrRemoved)
 					.AddUObject(this, &AAuraEnemy::StaggerTagChanged);
 

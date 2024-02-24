@@ -164,12 +164,6 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Lightning, Instance.Attributes_Resistance_Lightning);
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Arcane, Instance.Attributes_Resistance_Arcane);
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Arcane, Instance.Attributes_Resistance_Physical);
-	
-	/* Effects */
-	Instance.Effects_Stagger =
-		UGameplayTagsManager::Get().AddNativeGameplayTag(
-			FName("Effects.Stagger"),
-			FString("Tag granted when hit reacting."));
 
 	/* Abilities */
 	Instance.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(
@@ -180,12 +174,47 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 		FName("Abilities.Summon"),
 		FString("Summon Ability Tag.")
 		);
+	Instance.Abilities_Stagger = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Stagger"),
+		FString("Stagger Ability (Mechanic) Tag.")
+		);
+
+	Instance.Abilities_Status_Eligible = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Eligible"),
+		FString("Ability Status Eligible Tag.")
+		);
+	Instance.Abilities_Status_Equipped = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Equipped"),
+		FString("Ability Status Equipped Tag.")
+		);
+	Instance.Abilities_Status_Locked = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Locked"),
+		FString("Ability Status Locked Tag.")
+		);
+	Instance.Abilities_Status_Unlocked = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Status.Unlocked"),
+		FString("Ability Status Unlocked Tag.")
+		);
+	
 	Instance.Abilities_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Fire.FireBolt"),
 		FString("Fire Bolt Skill Ability Tag.")
 		);
 
-	/* Cooldowns */
+	Instance.Abilities_Type_Offensive = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Type.Offensive"),
+		FString("Tag for Offensive/Active Abilities.")
+		);
+	Instance.Abilities_Type_Passive = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Type.Passive"),
+		FString("Tag for Passive Abilities.")
+		);
+	Instance.Abilities_Type_Mechanic = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Type.Mechanic"),
+		FString("Tag for mechanics implemented by an Ability.")
+		);
+
+	/* Cool-downs */
 	Instance.Cooldown_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Cooldown.Fire.FireBolt"),
 		FString("Fire Bolt Cooldown Tag.")
