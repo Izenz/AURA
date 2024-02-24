@@ -118,7 +118,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectMo
 			{
 				FGameplayTagContainer TagContainer;
 				Data.EffectSpec.GetAllAssetTags(TagContainer);
-				//TagContainer.AddTag(FAuraGameplayTags::Get().Effects_Stagger);
+				TagContainer.AddTag(FAuraGameplayTags::Get().Abilities_Stagger);
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
 
