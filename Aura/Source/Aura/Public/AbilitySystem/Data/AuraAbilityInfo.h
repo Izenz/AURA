@@ -7,6 +7,8 @@
 #include "GameplayTagContainer.h"
 #include "AuraAbilityInfo.generated.h"
 
+class UGameplayAbility;
+
 USTRUCT(BlueprintType)
 struct FAbilityInfo
 {
@@ -29,6 +31,12 @@ struct FAbilityInfo
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TObjectPtr<const UMaterialInterface> BgMaterial = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	int32 LevelRequirement = 1;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<UGameplayAbility> Ability;
 };
 
 /**
@@ -42,7 +50,7 @@ class AURA_API UAuraAbilityInfo : public UDataAsset
 public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "AbilityInformation")
-	TArray<FAbilityInfo> AbilityInformation;
+	TArray<FAbilityInfo> AbilitiesInformation;
 
 	FAbilityInfo FindAbilityInfoForTag(const FGameplayTag& GameplayTag, bool bLogIfNotFound = false) const;
 };

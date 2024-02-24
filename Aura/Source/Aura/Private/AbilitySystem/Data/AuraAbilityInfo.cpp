@@ -7,7 +7,7 @@
 
 FAbilityInfo UAuraAbilityInfo::FindAbilityInfoForTag(const FGameplayTag& GameplayTag, bool bLogIfNotFound) const
 {
-	for (const FAbilityInfo& Info : AbilityInformation)
+	for (const FAbilityInfo& Info : AbilitiesInformation)
 	{
 		if (Info.AbilityTag == GameplayTag)
 		{

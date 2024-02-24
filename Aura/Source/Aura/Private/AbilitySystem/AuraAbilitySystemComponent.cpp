@@ -5,8 +5,11 @@
 
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AuraGameplayTags.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/Abilities/AuraGameplayAbility.h"
+#include "AbilitySystem/Data/AuraAbilityInfo.h"
 #include "Aura/AuraLogChannels.h"
+#include "AbilitySystem/Data/AuraAbilityInfo.h"
 #include "Interaction/PlayerInterface.h"
 
 void UAuraAbilitySystemComponent::OnAbilityActorInfoSet()
@@ -127,6 +130,23 @@ FGameplayTag UAuraAbilitySystemComponent::GetAbilityStatusFromSpec(const FGamepl
 	return FGameplayTag();
 }
 
+FGameplayAbilitySpec* UAuraAbilitySystemComponent::GetSpecFromAbilityTag(const FGameplayTag& AbilityTag)
+{
+	FScopedAbilityListLock ActiveScopeLock(*this);
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
+	{
+		for (const FGameplayTag& Tag : AbilitySpec.Ability.Get()->AbilityTags)
+		{
+			if (Tag.MatchesTag(AbilityTag))
+			{
+				return &AbilitySpec;
+			}
+		}
+	}
+
+	return nullptr;
+}
+
 void UAuraAbilitySystemComponent::UpgradeAttribute(const FGameplayTag& AttributeTag)
 {
 	if (GetAvatarActor()->Implements<UPlayerInterface>())
@@ -148,6 +168,22 @@ void UAuraAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FG
 	if (GetAvatarActor()->Implements<UPlayerInterface>())
 	{
 		IPlayerInterface::Execute_AddToAttributePoints(GetAvatarActor(), -1);
+	}
+}
+
+void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 CurrentLevel)
+{
+	UAuraAbilityInfo* AbilitiesInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+	for (const FAbilityInfo& AbilityInfo : AbilitiesInfo->AbilitiesInformation)
+	{
+		if (AbilityInfo.LevelRequirement <= CurrentLevel && !GetSpecFromAbilityTag(AbilityInfo.AbilityTag))
+		{
+			FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityInfo.Ability, 1);
+			AbilitySpec.DynamicAbilityTags.AddTag(FAuraGameplayTags::Get().Abilities_Status_Eligible);
+			GiveAbility(AbilitySpec);
+			/* This forces the ability to replicate immediately, instead of waiting for the next update. */
+			MarkAbilitySpecDirty(AbilitySpec);
+		}
 	}
 }
 

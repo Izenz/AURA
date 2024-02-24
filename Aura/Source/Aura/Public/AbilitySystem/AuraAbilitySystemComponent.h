@@ -37,10 +37,19 @@ public:
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec AbilitySpec);
 	static FGameplayTag GetAbilityStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec);
 
+	/**
+	 * Returns the Spec of the Ability that corresponds to the input AbilityTag, if this AbilitySystemComponent owns an Ability with a matching tag. Otherwise it returns nullptr.
+	 * @param AbilityTag Tag corresponding to the Ability.
+	 * @return Spec for the Ability with a tag that matches AbilityTag.
+	 */
+	FGameplayAbilitySpec* GetSpecFromAbilityTag(const FGameplayTag& AbilityTag);
+
 	void UpgradeAttribute(const FGameplayTag& AttributeTag);
 
 	UFUNCTION(Server, Reliable)
 	void ServerUpgradeAttribute(const FGameplayTag& AttributeTag);
+
+	void UpdateAbilityStatuses(int32 CurrentLevel);
 
 protected:
 

@@ -201,6 +201,11 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 		FString("Fire Bolt Skill Ability Tag.")
 		);
 
+	Instance.Abilities_Lightning_Electrocute = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.Lightning.Electrocute"),
+		FString("Electrocute Skill Ability Tag.")
+		);
+
 	Instance.Abilities_Type_Offensive = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Abilities.Type.Offensive"),
 		FString("Tag for Offensive/Active Abilities.")
