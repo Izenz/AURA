@@ -183,6 +183,7 @@ void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 CurrentLevel)
 			GiveAbility(AbilitySpec);
 			/* This forces the ability to replicate immediately, instead of waiting for the next update. */
 			MarkAbilitySpecDirty(AbilitySpec);
+			ClientUpdateAbilityStatus(AbilityInfo.AbilityTag, FAuraGameplayTags::Get().Abilities_Status_Eligible);
 		}
 	}
 }
@@ -196,6 +197,12 @@ void UAuraAbilitySystemComponent::OnRep_ActivateAbilities()
 		bStartupAbilitiesGiven = true;
 		AbilitiesGiven.Broadcast();
 	}
+}
+
+void UAuraAbilitySystemComponent::ClientUpdateAbilityStatus_Implementation(const FGameplayTag& AbilityTag,
+	const FGameplayTag& StatusTag)
+{
+	AbilityStatusChanged.Broadcast(AbilityTag, StatusTag);
 }
 
 void UAuraAbilitySystemComponent::ClientOnEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
