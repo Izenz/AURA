@@ -131,6 +131,14 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 		FName("Damage.Physical"),
 		FString("Physical Damage Type")
 		);
+	Instance.InputTag_Passive_1 =
+		UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("InputTag.Passive.1"),
+			FString("Input tag for Passive Skill 1."));
+	Instance.InputTag_Passive_2 =
+		UGameplayTagsManager::Get().AddNativeGameplayTag(
+			FName("InputTag.Passive.2"),
+			FString("Input tag for Passive Skill 2."));
 
 	/* Resistances */
 	
