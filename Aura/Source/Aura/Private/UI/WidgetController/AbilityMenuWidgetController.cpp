@@ -3,13 +3,14 @@
 
 #include "UI/WidgetController/AbilityMenuWidgetController.h"
 
-#include "NiagaraValidationRule.h"
 #include "AbilitySystem/Data/AuraAbilityInfo.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Player/AuraPlayerState.h"
 
 void UAbilityMenuWidgetController::BroadcastInitialValue()
 {
 	BroadcastAbilityInfo();
+	AbilityPointsChanged.Broadcast(GetPlayerState<AAuraPlayerState>()->GetPlayerAbilityPoints());
 }
 
 void UAbilityMenuWidgetController::BindCallbacksToDependencies()
@@ -22,5 +23,10 @@ void UAbilityMenuWidgetController::BindCallbacksToDependencies()
 			Info.StatusTag = StatusTag;
 			AbilityInfoDelegate.Broadcast(Info);
 		}
+	});
+
+	GetPlayerState<AAuraPlayerState>()->OnAbilityPointsChangedDelegate.AddLambda([this](const int32 NumOfAbilityPoints)
+	{
+		AbilityPointsChanged.Broadcast(NumOfAbilityPoints);
 	});
 }

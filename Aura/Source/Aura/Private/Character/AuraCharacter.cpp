@@ -154,6 +154,11 @@ int32 AAuraCharacter::GetAbilityPoints_Implementation() const
 	return AuraPlayerState->GetPlayerAbilityPoints();
 }
 
+ECharacterClass AAuraCharacter::GetCharacterClass_Implementation()
+{
+	return CharacterClass;
+}
+
 void AAuraCharacter::InitAbilityActorInfo()
 {
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();

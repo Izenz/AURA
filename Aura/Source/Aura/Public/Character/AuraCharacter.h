@@ -43,6 +43,7 @@ public:
 	virtual void AddToAbilityPoints_Implementation(int32 InAbilityPoints) override;
 	virtual int32 GetAttributePoints_Implementation() const override;
 	virtual int32 GetAbilityPoints_Implementation() const override;
+	virtual ECharacterClass GetCharacterClass_Implementation() override;
 
 	/** End Player Interface **/
 

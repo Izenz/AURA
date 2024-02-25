@@ -16,4 +16,7 @@ class AURA_API UAbilityMenuWidgetController : public UAuraWidgetController
 public:
 	virtual void BroadcastInitialValue() override;
 	virtual void BindCallbacksToDependencies() override;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnPlayerStatChangedSignature AbilityPointsChanged;
 };
