@@ -58,6 +58,7 @@ public:
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
 	FGameplayTag Abilities_Stagger;
+	FGameplayTag Abilities_None;
 
 	FGameplayTag Abilities_Status_Locked;
 	FGameplayTag Abilities_Status_Unlocked;

@@ -3,6 +3,7 @@
 
 #include "UI/WidgetController/AbilityMenuWidgetController.h"
 
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/Data/AuraAbilityInfo.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Player/AuraPlayerState.h"
@@ -29,4 +30,49 @@ void UAbilityMenuWidgetController::BindCallbacksToDependencies()
 	{
 		AbilityPointsChanged.Broadcast(NumOfAbilityPoints);
 	});
+}
+
+void UAbilityMenuWidgetController::AbilityGlobeSelected(const FGameplayTag& AbilityTag)
+{
+	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+	const int32 AbilityPoints = GetPlayerState<AAuraPlayerState>()->GetPlayerAbilityPoints();
+	FGameplayTag AbilityStatus;
+	
+	const bool IsTagValid = AbilityTag.IsValid();
+	const bool IsTagNone = AbilityTag.MatchesTag(GameplayTags.Abilities_None);
+	const FGameplayAbilitySpec* AbilitySpec = GetAbilitySystemComponent<UAuraAbilitySystemComponent>()->GetSpecFromAbilityTag(AbilityTag);
+	const bool IsSpecValid = AbilitySpec != nullptr;
+	
+	if (!IsTagValid || IsTagNone || !IsSpecValid)
+	{
+		AbilityStatus = GameplayTags.Abilities_Status_Locked;
+	}
+	else
+	{
+		AbilityStatus = GetAbilitySystemComponent<UAuraAbilitySystemComponent>()->GetAbilityStatusFromSpec(*AbilitySpec);
+	}
+
+	bool EnableSpendButton = false;
+	bool EnableEquipButton = false;
+	ShouldEnableButtons(AbilityStatus, AbilityPoints, EnableSpendButton, EnableEquipButton);
+	SpellGlobeSelectedDelegate.Broadcast(EnableSpendButton, EnableEquipButton);
+}
+
+void UAbilityMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, const int32 AbilityPoints,
+	bool& EnableSpendButton, bool& EnableEquipButton)
+{
+	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
+	EnableEquipButton = false;
+	EnableSpendButton = false;
+
+	if (AbilityStatus.MatchesTagExact(GameplayTags.Abilities_Status_Equipped) ||
+		AbilityStatus.MatchesTagExact(GameplayTags.Abilities_Status_Unlocked))
+	{
+		EnableEquipButton = true;
+		EnableSpendButton = AbilityPoints > 0;
+	}
+	else if (AbilityStatus.MatchesTagExact(GameplayTags.Abilities_Status_Eligible))
+	{
+		EnableSpendButton = AbilityPoints > 0;
+	}
 }

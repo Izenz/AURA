@@ -219,6 +219,11 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 		FString("Tag for mechanics implemented by an Ability.")
 		);
 
+	Instance.Abilities_None = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Abilities.None"),
+		FString("Tag for no ability. Like nullptr for AbilityTags.")
+		);
+
 	/* Cool-downs */
 	Instance.Cooldown_Fire_FireBolt = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Cooldown.Fire.FireBolt"),
