@@ -18,6 +18,15 @@ void UAbilityMenuWidgetController::BindCallbacksToDependencies()
 {
 	GetAbilitySystemComponent<UAuraAbilitySystemComponent>()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
 	{
+		if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
+		{
+			SelectedAbility.Status = StatusTag;
+			
+			bool EnableSpendButton = false;
+			bool EnableEquipButton = false;
+			ShouldEnableButtons(StatusTag, CurrentSpellPoints, EnableSpendButton, EnableEquipButton);
+			SpellGlobeSelectedDelegate.Broadcast(EnableSpendButton, EnableEquipButton);
+		}
 		if (AbilityInfo)
 		{
 			FAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
@@ -29,6 +38,12 @@ void UAbilityMenuWidgetController::BindCallbacksToDependencies()
 	GetPlayerState<AAuraPlayerState>()->OnAbilityPointsChangedDelegate.AddLambda([this](const int32 NumOfAbilityPoints)
 	{
 		AbilityPointsChanged.Broadcast(NumOfAbilityPoints);
+		CurrentSpellPoints = NumOfAbilityPoints;
+		
+		bool EnableSpendButton = false;
+		bool EnableEquipButton = false;
+		ShouldEnableButtons(SelectedAbility.Status, CurrentSpellPoints, EnableSpendButton, EnableEquipButton);
+		SpellGlobeSelectedDelegate.Broadcast(EnableSpendButton, EnableEquipButton);
 	});
 }
 
@@ -52,6 +67,9 @@ void UAbilityMenuWidgetController::AbilityGlobeSelected(const FGameplayTag& Abil
 		AbilityStatus = GetAbilitySystemComponent<UAuraAbilitySystemComponent>()->GetAbilityStatusFromSpec(*AbilitySpec);
 	}
 
+	SelectedAbility.Ability = AbilityTag;
+	SelectedAbility.Status = AbilityStatus;
+	
 	bool EnableSpendButton = false;
 	bool EnableEquipButton = false;
 	ShouldEnableButtons(AbilityStatus, AbilityPoints, EnableSpendButton, EnableEquipButton);
