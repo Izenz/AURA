@@ -16,7 +16,7 @@ void UAbilityMenuWidgetController::BroadcastInitialValue()
 
 void UAbilityMenuWidgetController::BindCallbacksToDependencies()
 {
-	GetAbilitySystemComponent<UAuraAbilitySystemComponent>()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag)
+	GetAbilitySystemComponent<UAuraAbilitySystemComponent>()->AbilityStatusChanged.AddLambda([this](const FGameplayTag& AbilityTag, const FGameplayTag& StatusTag, int32 AbilityLevel)
 	{
 		if (SelectedAbility.Ability.MatchesTagExact(AbilityTag))
 		{
@@ -76,8 +76,17 @@ void UAbilityMenuWidgetController::AbilityGlobeSelected(const FGameplayTag& Abil
 	SpellGlobeSelectedDelegate.Broadcast(EnableSpendButton, EnableEquipButton);
 }
 
+void UAbilityMenuWidgetController::OnSpendAbilityPointPressed()
+{
+	if (const auto AuraAsc = GetAbilitySystemComponent<UAuraAbilitySystemComponent>())
+	{
+		AuraAsc->ServerSpendAbilityPoint(SelectedAbility.Ability);
+	}
+	
+}
+
 void UAbilityMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, const int32 AbilityPoints,
-	bool& EnableSpendButton, bool& EnableEquipButton)
+                                                       bool& EnableSpendButton, bool& EnableEquipButton)
 {
 	const FAuraGameplayTags GameplayTags = FAuraGameplayTags::Get();
 	EnableEquipButton = false;

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AuraGameplayTags.h"
 #include "UI/WidgetController/AuraWidgetController.h"
 #include "GameplayTagContainer.h"
 #include "AbilityMenuWidgetController.generated.h"
@@ -34,6 +35,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void AbilityGlobeSelected(const FGameplayTag& AbilityTag);
+
+	UFUNCTION(BlueprintCallable)
+	void OnSpendAbilityPointPressed();
 
 private:
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, const int32 AbilityPoints, bool& EnableSpendButton, bool& EnableEquipButton);	
