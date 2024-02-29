@@ -171,6 +171,24 @@ void UAuraAbilitySystemComponent::ServerUpgradeAttribute_Implementation(const FG
 	}
 }
 
+bool UAuraAbilitySystemComponent::GetDescriptionByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription,
+	FString& OutNextLvDescription)
+{
+	if (const FGameplayAbilitySpec* Spec = GetSpecFromAbilityTag(AbilityTag))
+	{
+		if (const auto Ability = Cast<UAuraGameplayAbility>(Spec->Ability))
+		{
+			OutDescription = Ability->GetDescription(Spec->Level);
+			OutNextLvDescription = Ability->GetNextLevelDescription(Spec->Level + 1);
+			return true;
+		}
+	}
+	const UAuraAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+	OutDescription = UAuraGameplayAbility::GetDescriptionForLocked(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+	OutNextLvDescription = FString();
+	return false;
+}
+
 void UAuraAbilitySystemComponent::UpdateAbilityStatuses(int32 CurrentLevel)
 {
 	UAuraAbilityInfo* AbilitiesInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());

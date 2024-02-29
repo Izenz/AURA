@@ -51,6 +51,8 @@ public:
 	UFUNCTION(Server, Reliable)
 	void ServerUpgradeAttribute(const FGameplayTag& AttributeTag);
 
+	bool GetDescriptionByAbilityTag(const FGameplayTag& AbilityTag, FString& OutDescription, FString& OutNextLvDescription);
+
 	void UpdateAbilityStatuses(int32 CurrentLevel);
 
 	UFUNCTION(Server, Reliable)

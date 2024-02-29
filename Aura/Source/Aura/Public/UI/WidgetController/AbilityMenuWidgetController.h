@@ -8,7 +8,7 @@
 #include "GameplayTagContainer.h"
 #include "AbilityMenuWidgetController.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FSpellGlobeSelectedSignature, bool, bSpendButtonEnabled, bool, bEquipButtonEnabled);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FSpellGlobeSelectedSignature, bool, bSpendButtonEnabled, bool, bEquipButtonEnabled, FString, AbilityDesc, FString, AbilityNextLvDesc);
 
 struct FSelectedAbility
 {
