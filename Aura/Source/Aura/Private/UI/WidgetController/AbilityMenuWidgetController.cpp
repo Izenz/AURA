@@ -94,6 +94,14 @@ void UAbilityMenuWidgetController::OnSpendAbilityPointPressed()
 	
 }
 
+void UAbilityMenuWidgetController::GlobeDeselect()
+{
+	SelectedAbility.Ability = FAuraGameplayTags::Get().Abilities_None;
+	SelectedAbility.Status = FAuraGameplayTags::Get().Abilities_Status_Locked;
+
+	SpellGlobeSelectedDelegate.Broadcast(false, false, FString(), FString());
+}
+
 void UAbilityMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, const int32 AbilityPoints,
                                                        bool& EnableSpendButton, bool& EnableEquipButton)
 {

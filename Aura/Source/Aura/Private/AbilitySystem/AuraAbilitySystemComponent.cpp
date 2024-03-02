@@ -183,9 +183,19 @@ bool UAuraAbilitySystemComponent::GetDescriptionByAbilityTag(const FGameplayTag&
 			return true;
 		}
 	}
-	const UAuraAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
-	OutDescription = UAuraGameplayAbility::GetDescriptionForLocked(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
-	OutNextLvDescription = FString();
+	
+	if (!AbilityTag.IsValid() || AbilityTag.MatchesTagExact(FAuraGameplayTags::Get().Abilities_None))
+	{
+		OutDescription = FString();
+		OutNextLvDescription = FString();
+	}
+	else
+	{
+		const UAuraAbilityInfo* AbilityInfo = UAuraAbilitySystemLibrary::GetAbilityInfo(GetAvatarActor());
+		OutDescription = UAuraGameplayAbility::GetDescriptionForLocked(AbilityInfo->FindAbilityInfoForTag(AbilityTag).LevelRequirement);
+		OutNextLvDescription = FString();
+	}
+
 	return false;
 }
 
