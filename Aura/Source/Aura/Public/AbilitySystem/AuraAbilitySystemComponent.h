@@ -10,6 +10,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContaine
 DECLARE_MULTICAST_DELEGATE(FAbilitiesGiven);
 DECLARE_DELEGATE_OneParam(FForEachAbility, const FGameplayAbilitySpec&);
 DECLARE_MULTICAST_DELEGATE_ThreeParams(FAbilityStatusChanged, const FGameplayTag& /* AbilityTag */, const FGameplayTag& /* StatusTag */, int32 /* AbilityLevel */);
+DECLARE_MULTICAST_DELEGATE_FourParams(FAbilityEquipped, const FGameplayTag& /* AbilityTag */,
+                                      const FGameplayTag& /* Status */, const FGameplayTag& /* Slot */,
+                                      const FGameplayTag& /* Previous Slot */)
 
 /**
  * 
@@ -26,6 +29,7 @@ public:
 	FEffectAssetTags EffectAssetTags;
 	FAbilitiesGiven AbilitiesGiven;
 	FAbilityStatusChanged AbilityStatusChanged;
+	FAbilityEquipped AbilityEquipped;
 
 	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 	void AddCharacterPassiveAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupPassiveAbilities);
@@ -38,7 +42,8 @@ public:
 	static FGameplayTag GetAbilityTagFromSpec(const FGameplayAbilitySpec AbilitySpec);
 	static FGameplayTag GetInputTagFromSpec(const FGameplayAbilitySpec AbilitySpec);
 	static FGameplayTag GetAbilityStatusFromSpec(const FGameplayAbilitySpec& AbilitySpec);
-
+	FGameplayTag GetStatusFromAbilityTag(const FGameplayTag& Tag);
+	FGameplayTag GetInputTagFromAbilityTag(const FGameplayTag& Tag);
 	/**
 	 * Returns the Spec of the Ability that corresponds to the input AbilityTag, if this AbilitySystemComponent owns an Ability with a matching tag. Otherwise it returns nullptr.
 	 * @param AbilityTag Tag corresponding to the Ability.
@@ -57,6 +62,16 @@ public:
 
 	UFUNCTION(Server, Reliable)
 	void ServerSpendAbilityPoint(const FGameplayTag& AbilityTag);
+
+	UFUNCTION(Server, Reliable)
+	void ServerEquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Slot);
+
+	void ClientEquipAbility(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot,
+	                        const FGameplayTag& PrevSlot) const;
+
+	void ClearSlot(FGameplayAbilitySpec* Spec);
+	void ClearAssignedSlotFromAbilities(const FGameplayTag& Slot);
+	static bool IsAbilityAssignedTo(FGameplayAbilitySpec* Spec, const FGameplayTag& Slot);
 
 protected:
 

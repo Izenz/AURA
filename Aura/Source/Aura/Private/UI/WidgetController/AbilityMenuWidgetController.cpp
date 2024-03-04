@@ -38,6 +38,8 @@ void UAbilityMenuWidgetController::BindCallbacksToDependencies()
 		}
 	});
 
+	GetAbilitySystemComponent<UAuraAbilitySystemComponent>()->AbilityEquipped.AddUObject(this, &UAbilityMenuWidgetController::OnAbilityEquipped);
+
 	GetPlayerState<AAuraPlayerState>()->OnAbilityPointsChangedDelegate.AddLambda([this](const int32 NumOfAbilityPoints)
 	{
 		AbilityPointsChanged.Broadcast(NumOfAbilityPoints);
@@ -108,6 +110,12 @@ void UAbilityMenuWidgetController::GlobeDeselect()
 		const FGameplayTag& AbilityType = AbilityInfo->FindAbilityInfoForTag(SelectedAbility.Ability).AbilityType;
 		StopWaitingForEquipDelegate.Broadcast(AbilityType);
 		bWaitingForEquipSelection = false;
+
+		const FGameplayTag Status = GetAbilitySystemComponent<UAuraAbilitySystemComponent>()->GetStatusFromAbilityTag(SelectedAbility.Ability);
+		if (Status.MatchesTagExact(FAuraGameplayTags::Get().Abilities_Status_Equipped))
+		{
+			SelectedSlot =  GetAbilitySystemComponent<UAuraAbilitySystemComponent>()->GetInputTagFromAbilityTag(SelectedAbility.Ability);
+		}
 	}
 	
 	SelectedAbility.Ability = FAuraGameplayTags::Get().Abilities_None;
@@ -122,6 +130,44 @@ void UAbilityMenuWidgetController::OnEquipButtonPressed()
 
 	WaitForEquipButtonDelegate.Broadcast(AbilityType);
 	bWaitingForEquipSelection = true;
+}
+
+void UAbilityMenuWidgetController::OnSpellRowGlobePressed(const FGameplayTag& SlotTag, const FGameplayTag& AbilityType)
+{
+	if (!bWaitingForEquipSelection)
+	{
+		return;
+	}
+	const FGameplayTag& SelectedAbilityType = AbilityInfo->FindAbilityInfoForTag(SelectedAbility.Ability).AbilityType;
+	if (!SelectedAbilityType.MatchesTagExact(AbilityType))
+	{
+		return;
+	}
+
+	GetAbilitySystemComponent<UAuraAbilitySystemComponent>()->ServerEquipAbility(SelectedAbility.Ability, SlotTag);
+}
+
+void UAbilityMenuWidgetController::OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status,
+	const FGameplayTag& Slot, const FGameplayTag& PrevSlot)
+{
+	const FAuraGameplayTags& Tags = FAuraGameplayTags::Get();
+	
+	bWaitingForEquipSelection = false;
+
+	// Clear old slot
+	FAbilityInfo LastSlotInfo;
+	LastSlotInfo.StatusTag = Tags.Abilities_Status_Unlocked;
+	LastSlotInfo.InputTag = PrevSlot;
+	LastSlotInfo.AbilityTag = Tags.Abilities_None;
+	AbilityInfoDelegate.Broadcast(LastSlotInfo);
+
+	// Fill new one
+	FAbilityInfo Info = AbilityInfo->FindAbilityInfoForTag(AbilityTag);
+	Info.StatusTag = Status;
+	Info.InputTag = Slot;
+	AbilityInfoDelegate.Broadcast(Info);
+
+	StopWaitingForEquipDelegate.Broadcast(AbilityInfo->FindAbilityInfoForTag(AbilityTag).AbilityType);
 }
 
 void UAbilityMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, const int32 AbilityPoints,

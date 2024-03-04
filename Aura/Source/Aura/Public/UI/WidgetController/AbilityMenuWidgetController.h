@@ -52,9 +52,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnEquipButtonPressed();
 
+	void OnSpellRowGlobePressed(const FGameplayTag& SlotTag, const FGameplayTag& AbilityType);
+
+	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot,
+							const FGameplayTag& PrevSlot);
+
 private:
 	static void ShouldEnableButtons(const FGameplayTag& AbilityStatus, const int32 AbilityPoints, bool& EnableSpendButton, bool& EnableEquipButton);	
 	FSelectedAbility SelectedAbility = { FAuraGameplayTags::Get().Abilities_None, FAuraGameplayTags::Get().Abilities_Status_Locked };
 	int32 CurrentSpellPoints = 0;
 	bool bWaitingForEquipSelection = false;
+	FGameplayTag SelectedSlot;
 };
