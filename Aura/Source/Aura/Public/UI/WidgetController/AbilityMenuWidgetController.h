@@ -52,6 +52,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void OnEquipButtonPressed();
 
+	UFUNCTION(BlueprintCallable)
 	void OnSpellRowGlobePressed(const FGameplayTag& SlotTag, const FGameplayTag& AbilityType);
 
 	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot,

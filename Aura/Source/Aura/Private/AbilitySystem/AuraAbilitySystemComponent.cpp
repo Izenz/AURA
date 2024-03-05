@@ -318,7 +318,6 @@ void UAuraAbilitySystemComponent::ClearAssignedSlotFromAbilities(const FGameplay
 
 bool UAuraAbilitySystemComponent::IsAbilityAssignedTo(FGameplayAbilitySpec* Spec, const FGameplayTag& Slot)
 {
-	__cpp_static_assert(Spec);
 	for (const FGameplayTag& Tag : Spec->DynamicAbilityTags)
 	{
 		if (Tag.MatchesTagExact(Slot))
