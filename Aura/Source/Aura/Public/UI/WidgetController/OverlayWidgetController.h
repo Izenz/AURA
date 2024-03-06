@@ -77,6 +77,9 @@ protected:
 	static T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
 
 	void OnExpChanged(int32 NewExp) const;
+
+	void OnAbilityEquipped(const FGameplayTag& AbilityTag, const FGameplayTag& Status, const FGameplayTag& Slot,
+							const FGameplayTag& PrevSlot) const;
 	
 };
 
