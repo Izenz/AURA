@@ -168,6 +168,8 @@ void UAbilityMenuWidgetController::OnAbilityEquipped(const FGameplayTag& Ability
 	AbilityInfoDelegate.Broadcast(Info);
 
 	StopWaitingForEquipDelegate.Broadcast(AbilityInfo->FindAbilityInfoForTag(AbilityTag).AbilityType);
+	AbilityGlobeReassigned.Broadcast(AbilityTag);
+	GlobeDeselect();
 }
 
 void UAbilityMenuWidgetController::ShouldEnableButtons(const FGameplayTag& AbilityStatus, const int32 AbilityPoints,
