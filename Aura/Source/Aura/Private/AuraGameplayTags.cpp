@@ -159,11 +159,33 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 		FString("Resistance to Physical damage")
 		);
 
+	Instance.Debuff_Burn = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Burn"),
+		FString("Burn Debuff: Applies damage over time.")
+		);
+	Instance.Debuff_Stun = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Stun"),
+		FString("Stun Debuff: Immobilizes for a period of time.")
+		);
+	Instance.Debuff_Curse = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Curse"),
+		FString("Curse Debuff: Reduces movement and attack speed.")
+		);
+	Instance.Debuff_Bleed = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Bleed"),
+		FString("Bleed Debuff: Applies massive damage when stacked.")
+		);
+
 	/* Map of Damage Types to Resistances */
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Fire, Instance.Attributes_Resistance_Fire);
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Lightning, Instance.Attributes_Resistance_Lightning);
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Arcane, Instance.Attributes_Resistance_Arcane);
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Arcane, Instance.Attributes_Resistance_Physical);
+
+	Instance.DamageTypesToDebuffs.Add(Instance.Damage_Fire, Instance.Debuff_Burn);
+	Instance.DamageTypesToDebuffs.Add(Instance.Damage_Lightning, Instance.Debuff_Stun);
+	Instance.DamageTypesToDebuffs.Add(Instance.Damage_Arcane, Instance.Debuff_Curse);
+	Instance.DamageTypesToDebuffs.Add(Instance.Damage_Physical, Instance.Debuff_Bleed);
 
 	/* Abilities */
 	Instance.Abilities_Attack = UGameplayTagsManager::Get().AddNativeGameplayTag(

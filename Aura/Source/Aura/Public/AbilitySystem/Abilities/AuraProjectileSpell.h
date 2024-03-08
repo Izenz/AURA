@@ -17,7 +17,6 @@ class AURA_API UAuraProjectileSpell : public UAuraDamageGameplayAbility
 {
 	GENERATED_BODY()
 
-
 protected:
 
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle,
