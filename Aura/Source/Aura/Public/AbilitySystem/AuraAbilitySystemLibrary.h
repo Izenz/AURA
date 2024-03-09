@@ -14,6 +14,7 @@ class UOverlayWidgetController;
 class UAttributeMenuWidgetController;
 struct FWidgetControllerParams;
 struct FAbilityInfo;
+struct FDamageEffectParams;
 
 /**
  * 
@@ -68,7 +69,9 @@ public:
 	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics")
 	static bool AreAllies(AActor* FirstActor, AActor* OtherActor);
 
+	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffect")
+	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& EffectParams);
+	
 	UFUNCTION()
 	static int32 GetExpRewardForClassAndLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass, int32 CharacterLevel);
-	
 };
