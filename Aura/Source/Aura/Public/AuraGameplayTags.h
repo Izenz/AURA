@@ -60,6 +60,12 @@ public:
 	FGameplayTag Debuff_Curse;
 	FGameplayTag Debuff_Bleed;
 
+	FGameplayTag Debuff_Chance;
+	FGameplayTag Debuff_Damage;
+	FGameplayTag Debuff_Frequency;
+	FGameplayTag Debuff_Duration;
+	
+
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
 	FGameplayTag Abilities_Stagger;

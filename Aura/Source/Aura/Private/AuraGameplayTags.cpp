@@ -176,6 +176,23 @@ void FAuraGameplayTags::InitNativeGameplayTags()
 		FString("Bleed Debuff: Applies massive damage when stacked.")
 		);
 
+	Instance.Debuff_Chance = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Chance"),
+		FString("Debuff Chance.")
+		);
+	Instance.Debuff_Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Damage"),
+		FString("Debuff value.")
+		);
+	Instance.Debuff_Frequency = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Frequency"),
+		FString("Debuff Tick Frequency.")
+		);
+	Instance.Debuff_Duration = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Debuff.Duration"),
+		FString("debuff Duration in seconds.")
+		);
+
 	/* Map of Damage Types to Resistances */
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Fire, Instance.Attributes_Resistance_Fire);
 	Instance.DamageTypesToResistances.Add(Instance.Damage_Lightning, Instance.Attributes_Resistance_Lightning);

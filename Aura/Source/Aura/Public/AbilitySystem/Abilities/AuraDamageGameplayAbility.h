@@ -25,4 +25,14 @@ protected:
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	FScalableFloat Damage;
+
+	//TODO: Make these a FScalableFloat
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	float DebuffChange = 20.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	float DebuffDamage = 5.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	float DebuffFrequency = 1.f;
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	float DebuffDuration = 5.f;
 };
