@@ -17,7 +17,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation, const 
 	if (!GetAvatarActorFromActorInfo()->HasAuthority())	return;
 
 	const FVector SocketLocation = ICombatInterface::Execute_GetCombatSocketLocation(GetAvatarActorFromActorInfo(), SocketTag);
-	FRotator Rotation = (TargetLocation - SocketLocation).Rotation();
+	const FRotator Rotation = (TargetLocation - SocketLocation).Rotation();
 	// TODO: Find a better fix to compensate for server/client discrepancy on weapon socket than to comment out next line
 	// Rotation.Pitch = 0.f;
 
@@ -32,26 +32,7 @@ void UAuraProjectileSpell::SpawnProjectile(const FVector& TargetLocation, const 
 		Cast<APawn>(GetOwningActorFromActorInfo()),
 		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 
-	const UAbilitySystemComponent* SourceASC = 
-		UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
-
-	FGameplayEffectContextHandle EffectContextHandle = SourceASC->MakeEffectContext();
-	EffectContextHandle.SetAbility(this);
-	EffectContextHandle.AddSourceObject(Projectile);
-	TArray<TWeakObjectPtr<AActor>> Actors;
-	Actors.Add(Projectile);
-	EffectContextHandle.AddActors(Actors);
-	FHitResult HitResult;
-	HitResult.Location = TargetLocation;
-	EffectContextHandle.AddHitResult(HitResult);
-		
-	const FGameplayEffectSpecHandle SpecHandle = 
-		SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), EffectContextHandle);
-
-	const float ScaledDamage = Damage.GetValueAtLevel(GetAbilityLevel());
-	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, DamageType, ScaledDamage);
-		
-	Projectile->DamageEffectSpecHandle = SpecHandle;
-
+	Projectile->DamageEffectParams = MakeDamageEffectParamsFromClassDefaults();
+	
 	Projectile->FinishSpawning(SpawnTransform);
 }

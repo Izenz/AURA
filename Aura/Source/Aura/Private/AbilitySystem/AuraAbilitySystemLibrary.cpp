@@ -217,7 +217,7 @@ void UAuraAbilitySystemLibrary::GetLivePlayersInRadius(const UObject* WorldConte
 	}
 }
 
-bool UAuraAbilitySystemLibrary::AreAllies(AActor* FirstActor, AActor* OtherActor)
+bool UAuraAbilitySystemLibrary::AreAllies(const AActor* FirstActor, const AActor* OtherActor)
 {
 	const bool BothPlayers = FirstActor->ActorHasTag(FName("Player")) && OtherActor->ActorHasTag(FName("Player"));
 	const bool BothEnemies = FirstActor->ActorHasTag(FName("Enemy")) && OtherActor->ActorHasTag(FName("Enemy"));

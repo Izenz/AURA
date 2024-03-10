@@ -67,7 +67,7 @@ public:
 	static void GetLivePlayersInRadius(const UObject* WorldContextObject, TArray<AActor*>& OutOverlappingActors, UPARAM(ref) TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin);
 
 	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "AuraAbilitySystemLibrary|GameplayMechanics")
-	static bool AreAllies(AActor* FirstActor, AActor* OtherActor);
+	static bool AreAllies(const AActor* FirstActor, const AActor* OtherActor);
 
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySystemLibrary|DamageEffect")
 	static FGameplayEffectContextHandle ApplyDamageEffect(const FDamageEffectParams& EffectParams);
