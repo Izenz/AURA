@@ -49,10 +49,22 @@ struct FAuraGameplayEffectContext : public FGameplayEffectContext
 	GENERATED_BODY()
 
 	bool IsCriticalHit() const { return bIsCriticalHit; }
-	void SetIsCriticalHit(bool bValue) { bIsCriticalHit = bValue; }
+	void SetIsCriticalHit(const bool bValue) { bIsCriticalHit = bValue; }
 
 	bool IsEvadedHit() const { return bIsEvadedHit; }
-	void SetIsEvadedHit(bool bValue) { bIsEvadedHit = bValue; }
+	void SetIsEvadedHit(const bool bValue) { bIsEvadedHit = bValue; }
+
+	bool DoesHitApplyDebuff() const { return bDoesHitApplyDebuff; }
+	void SetHitAppliesDebuff(const bool bHitAppliesDebuff) { bDoesHitApplyDebuff = bHitAppliesDebuff; }
+
+	float GetDebuffDamage() const { return DebuffDamage; }
+	float GetDebuffDuration() const { return DebuffDuration; }
+	float GetDebuffFrequency() const { return DebuffFrequency; }
+	const TSharedPtr<FGameplayTag>& GetDamageType() const { return DamageType; }
+
+	void SetDebuffDamage(const float InDebuffDamage) { DebuffDamage = InDebuffDamage; }
+	void SetDebuffDuration(const float InDebuffDuration) { DebuffDuration = InDebuffDuration; }
+	void SetDebuffFrequency(const float InDebuffFrequency) { DebuffFrequency = InDebuffFrequency; }
 
 	/** Returns the actual struct used for serialization, subclasses must override this! */
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -83,6 +95,18 @@ protected:
 	
 	UPROPERTY()
 	bool bIsCriticalHit = false;
+
+	UPROPERTY()
+	bool bDoesHitApplyDebuff = false;
+
+	UPROPERTY()
+	float DebuffDamage = 0.f;
+	UPROPERTY()
+	float DebuffDuration = 0.f;
+	UPROPERTY()
+	float DebuffFrequency = 0.f;
+
+	TSharedPtr<FGameplayTag> DamageType;
 };
 
 template <>
