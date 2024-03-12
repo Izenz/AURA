@@ -252,5 +252,9 @@ private:
 	void ShowFloatingText(const FEffectProperties& Props, float Damage, bool bIsEvadedHit, bool bIsCriticalHit) const;
 	void SendExpEvent(const FEffectProperties& Props) const;
 
+	void HandleIncomingDamage(const FEffectProperties& Props);
+	void HandleIncomingExp(const FEffectProperties& Props);
+	void HandleDebuff(const FEffectProperties& Props);
+
 	bool bTopOffVitals;
 };
