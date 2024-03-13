@@ -79,7 +79,7 @@ void UAuraAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* World
 	const AAuraGameModeBase* AuraGameMode =
 		Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 
-	if(AuraGameMode == nullptr)	return;
+	if (AuraGameMode == nullptr)	return;
 
 	const AActor* AvatarActor = Asc->GetAvatarActor();
 	
@@ -146,20 +146,20 @@ int32 UAuraAbilitySystemLibrary::GetExpRewardForClassAndLevel(const UObject* Wor
 UCharacterClassInfo* UAuraAbilitySystemLibrary::GetCharacterClassInfo(const UObject* WorldContextObject)
 {
 	const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
-	if(!AuraGameMode)	return nullptr;
+	if (!AuraGameMode)	return nullptr;
 	return AuraGameMode->CharacterClassInfo;
 }
 
 UAuraAbilityInfo* UAuraAbilitySystemLibrary::GetAbilityInfo(const UObject* WorldContextObject)
 {
 	const AAuraGameModeBase* AuraGameMode = Cast<AAuraGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
-	if(!AuraGameMode)	return nullptr;
+	if (!AuraGameMode)	return nullptr;
 	return AuraGameMode->AbilityInfo;
 }
 
 bool UAuraAbilitySystemLibrary::IsEvadedHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
-	if(const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		return AuraEffectContext->IsEvadedHit();
 	}
@@ -169,7 +169,7 @@ bool UAuraAbilitySystemLibrary::IsEvadedHit(const FGameplayEffectContextHandle& 
 
 bool UAuraAbilitySystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle& EffectContextHandle)
 {
-	if(const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		return AuraEffectContext->IsCriticalHit();
 	}
@@ -179,7 +179,7 @@ bool UAuraAbilitySystemLibrary::IsCriticalHit(const FGameplayEffectContextHandle
 
 bool UAuraAbilitySystemLibrary::DoesHitApplyDebuff(const FGameplayEffectContextHandle& EffectContextHandle)
 {
-	if(const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		return AuraEffectContext->DoesHitApplyDebuff();
 	}
@@ -189,7 +189,7 @@ bool UAuraAbilitySystemLibrary::DoesHitApplyDebuff(const FGameplayEffectContextH
 
 float UAuraAbilitySystemLibrary::GetDebuffDamage(const FGameplayEffectContextHandle& EffectContextHandle)
 {
-	if(const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		return AuraEffectContext->GetDebuffDamage();
 	}
@@ -199,7 +199,7 @@ float UAuraAbilitySystemLibrary::GetDebuffDamage(const FGameplayEffectContextHan
 
 float UAuraAbilitySystemLibrary::GetDebuffDuration(const FGameplayEffectContextHandle& EffectContextHandle)
 {
-	if(const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		return AuraEffectContext->GetDebuffDuration();
 	}
@@ -209,7 +209,7 @@ float UAuraAbilitySystemLibrary::GetDebuffDuration(const FGameplayEffectContextH
 
 float UAuraAbilitySystemLibrary::GetDebuffFrequency(const FGameplayEffectContextHandle& EffectContextHandle)
 {
-	if(const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		return AuraEffectContext->GetDebuffFrequency();
 	}
@@ -219,7 +219,7 @@ float UAuraAbilitySystemLibrary::GetDebuffFrequency(const FGameplayEffectContext
 
 FGameplayTag UAuraAbilitySystemLibrary::GetDamageType(const FGameplayEffectContextHandle& EffectContextHandle)
 {
-	if(const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		if (AuraEffectContext->GetDamageType().IsValid())
 		{
@@ -232,7 +232,7 @@ FGameplayTag UAuraAbilitySystemLibrary::GetDamageType(const FGameplayEffectConte
 
 void UAuraAbilitySystemLibrary::SetIsEvadedHit(FGameplayEffectContextHandle& EffectContextHandle, const bool bValue)
 {
-	if(FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		AuraEffectContext->SetIsEvadedHit(bValue);
 	}
@@ -240,7 +240,7 @@ void UAuraAbilitySystemLibrary::SetIsEvadedHit(FGameplayEffectContextHandle& Eff
 
 void UAuraAbilitySystemLibrary::SetIsCriticalHit(FGameplayEffectContextHandle& EffectContextHandle, const bool bValue)
 {
-	if(FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		AuraEffectContext->SetIsCriticalHit(bValue);
 	}
@@ -248,7 +248,7 @@ void UAuraAbilitySystemLibrary::SetIsCriticalHit(FGameplayEffectContextHandle& E
 
 void UAuraAbilitySystemLibrary::SetHitAppliesDebuff(FGameplayEffectContextHandle& EffectContextHandle, const bool bValue)
 {
-	if(FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		AuraEffectContext->SetHitAppliesDebuff(bValue);
 	}
@@ -256,7 +256,7 @@ void UAuraAbilitySystemLibrary::SetHitAppliesDebuff(FGameplayEffectContextHandle
 
 void UAuraAbilitySystemLibrary::SetDebuffDamage(FGameplayEffectContextHandle& EffectContextHandle, const float Value)
 {
-	if(FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		AuraEffectContext->SetDebuffDamage(Value);
 	}
@@ -264,7 +264,7 @@ void UAuraAbilitySystemLibrary::SetDebuffDamage(FGameplayEffectContextHandle& Ef
 
 void UAuraAbilitySystemLibrary::SetDebuffDuration(FGameplayEffectContextHandle& EffectContextHandle, const float Value)
 {
-	if(FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		AuraEffectContext->SetDebuffDuration(Value);
 	}
@@ -272,7 +272,7 @@ void UAuraAbilitySystemLibrary::SetDebuffDuration(FGameplayEffectContextHandle& 
 
 void UAuraAbilitySystemLibrary::SetDebuffFrequency(FGameplayEffectContextHandle& EffectContextHandle, const float Value)
 {
-	if(FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
 		AuraEffectContext->SetDebuffFrequency(Value);
 	}
