@@ -39,8 +39,11 @@ public:
 	virtual int32 GetMinionCount_Implementation() override;
 	virtual void SetMinionCount_Implementation(int32 NewCount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
+	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
 	/* End Combat Interface */
 
+	FOnASCRegistered OnASCRegistered;
+	
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
 
