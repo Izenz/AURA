@@ -8,6 +8,7 @@
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "AbilitySystem/Data/CharacterClassInfo.h"
+#include "Aura/AuraLogChannels.h"
 #include "Interaction/CombatInterface.h"
 
 struct AuraDamageStatics
@@ -122,7 +123,7 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 	EvaluationParams.TargetTags = TargetTags;
 
 	/*  Debuff */
-	for (const auto& [DamageType, DebuffType] : Tags.DamageTypesToDebuffs)
+	for (const auto [DamageType, DebuffType] : Tags.DamageTypesToDebuffs)
 	{
 		const float TypeDamage = Spec.GetSetByCallerMagnitude(DamageType, false, -1.f);
 		if (TypeDamage > 0.f)
@@ -150,6 +151,11 @@ void UExecCalc_Damage::Execute_Implementation(const FGameplayEffectCustomExecuti
 				UAuraAbilitySystemLibrary::SetDebuffDamage(ContextHandle, DebuffDamage);
 				UAuraAbilitySystemLibrary::SetDebuffDuration(ContextHandle, DebuffDuration);
 				UAuraAbilitySystemLibrary::SetDebuffFrequency(ContextHandle, DebuffFrequency);
+
+				if (!TargetAvatar->ActorHasTag(FName("Debuff.Burn")))
+				{
+					UE_LOG(LogAura, Error, TEXT("Target does not have burn debuff"));
+				}
 			}
 		}
 	}

@@ -10,6 +10,7 @@
 #include "AuraCharacterBase.generated.h"
 
 class UNiagaraSystem;
+class UDebuffNiagaraComponent;
 class UAbilitySystemComponent;
 class UAttributeSet;
 class UGameplayEffect;
@@ -40,9 +41,11 @@ public:
 	virtual void SetMinionCount_Implementation(int32 NewCount) override;
 	virtual ECharacterClass GetCharacterClass_Implementation() override;
 	virtual FOnASCRegistered GetOnASCRegisteredDelegate() override;
+	virtual FOnDeath GetOnDeathDelegate() override;
 	/* End Combat Interface */
 
 	FOnASCRegistered OnASCRegistered;
+	FOnDeath OnDeath;
 	
 	UFUNCTION(NetMulticast, Reliable)
 	virtual void MulticastHandleDeath();
@@ -116,9 +119,11 @@ protected:
 	/* Companions/Minions */
 	int32 MinionCount = 0;
 
-protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	ECharacterClass CharacterClass = ECharacterClass::Warrior;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UDebuffNiagaraComponent> BurnDebuffComponent;
 
 private:
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float EffectLevel) const;

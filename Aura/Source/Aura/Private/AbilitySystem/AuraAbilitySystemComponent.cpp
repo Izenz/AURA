@@ -269,10 +269,8 @@ void UAuraAbilitySystemComponent::ServerEquipAbility_Implementation(const FGamep
 		const FGameplayTag& PrevSlot = GetInputTagFromSpec(*Spec);
 		const FGameplayTag& Status = GetAbilityStatusFromSpec(*Spec);
 
-		const bool bStatusValid = Status.MatchesTagExact(FAuraGameplayTags::Get().Abilities_Status_Equipped) ||
-			Status.MatchesTagExact(FAuraGameplayTags::Get().Abilities_Status_Unlocked);
-
-		if (bStatusValid)
+		if (Status.MatchesTagExact(FAuraGameplayTags::Get().Abilities_Status_Equipped) ||
+			Status.MatchesTagExact(FAuraGameplayTags::Get().Abilities_Status_Unlocked))
 		{
 			ClearAssignedSlotFromAbilities(Slot);
 			ClearSlot(Spec);
