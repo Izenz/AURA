@@ -31,6 +31,8 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassD
 	Params.DebuffDuration = DebuffDuration;
 	Params.DebuffFrequency = DebuffFrequency;
 
+	// Death Impulse is to be filled later, in AuraProjectile
+
 	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;
 
 	return Params;

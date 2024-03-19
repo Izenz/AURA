@@ -230,6 +230,19 @@ FGameplayTag UAuraAbilitySystemLibrary::GetDamageType(const FGameplayEffectConte
 	return FGameplayTag();
 }
 
+FVector UAuraAbilitySystemLibrary::GetDeathImpulse(const FGameplayEffectContextHandle& EffectContextHandle)
+{
+	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		if (AuraEffectContext->GetDamageType().IsValid())
+		{
+			return AuraEffectContext->GetDeathImpulse();
+		}
+	}
+
+	return FVector();
+}
+
 void UAuraAbilitySystemLibrary::SetIsEvadedHit(FGameplayEffectContextHandle& EffectContextHandle, const bool bValue)
 {
 	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
@@ -288,6 +301,15 @@ void UAuraAbilitySystemLibrary::SetDamageType(FGameplayEffectContextHandle& Effe
 	}
 }
 
+void UAuraAbilitySystemLibrary::SetDeathImpulse(FGameplayEffectContextHandle& EffectContextHandle,
+	const FVector& InImpulseDir)
+{
+	if (FAuraGameplayEffectContext* AuraEffectContext = static_cast<FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
+	{
+		AuraEffectContext->SetDeathImpulse(InImpulseDir);
+	}
+}
+
 void UAuraAbilitySystemLibrary::GetLivePlayersInRadius(const UObject* WorldContextObject,
                                                        TArray<AActor*>& OutOverlappingActors, TArray<AActor*>& ActorsToIgnore, float Radius, const FVector& SphereOrigin)
 {
@@ -326,6 +348,7 @@ FGameplayEffectContextHandle UAuraAbilitySystemLibrary::ApplyDamageEffect(const 
 	const AActor* SourceAvatarActor = EffectParams.SourceAbilitySystemComponent->GetAvatarActor();
 	FGameplayEffectContextHandle EffectContextHandle = EffectParams.SourceAbilitySystemComponent->MakeEffectContext();
 	EffectContextHandle.AddSourceObject(SourceAvatarActor);
+	SetDeathImpulse(EffectContextHandle, EffectParams.DeathImpulseDir);
 	
 	const FGameplayEffectSpecHandle SpecHandle = EffectParams.SourceAbilitySystemComponent->MakeOutgoingSpec(EffectParams.DamageGameplayEffectClass, EffectParams.AbilityLevel, EffectContextHandle);
 	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, EffectParams.DamageType, EffectParams.BaseDamage);
