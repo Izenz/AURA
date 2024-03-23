@@ -65,31 +65,35 @@ bool FAuraGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 		{
 			RepBits |= 1 << 14;
 		}
+		if (!KnockbackForce.IsZero())
+		{
+			RepBits |= 1 << 15;
+		}
 	}
 
-	Ar.SerializeBits(&RepBits, 14);
+	Ar.SerializeBits(&RepBits, 15);
 
-	if (RepBits & (1 << 0))
+	if (RepBits & 1 << 0)
 	{
 		Ar << Instigator;
 	}
-	if (RepBits & (1 << 1))
+	if (RepBits & 1 << 1)
 	{
 		Ar << EffectCauser;
 	}
-	if (RepBits & (1 << 2))
+	if (RepBits & 1 << 2)
 	{
 		Ar << AbilityCDO;
 	}
-	if (RepBits & (1 << 3))
+	if (RepBits & 1 << 3)
 	{
 		Ar << SourceObject;
 	}
-	if (RepBits & (1 << 4))
+	if (RepBits & 1 << 4)
 	{
 		SafeNetSerializeTArray_Default<31>(Ar, Actors);
 	}
-	if (RepBits & (1 << 5))
+	if (RepBits & 1 << 5)
 	{
 		if (Ar.IsLoading())
 		{
@@ -100,7 +104,7 @@ bool FAuraGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 		}
 		HitResult->NetSerialize(Ar, Map, bOutSuccess);
 	}
-	if (RepBits & (1 << 6))
+	if (RepBits & 1 << 6)
 	{
 		Ar << WorldOrigin;
 		bHasWorldOrigin = true;
@@ -109,31 +113,31 @@ bool FAuraGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 	{
 		bHasWorldOrigin = false;
 	}
-	if (RepBits & (1 << 7))
+	if (RepBits & 1 << 7)
 	{
 		Ar << bIsEvadedHit;
 	}
-	if (RepBits & (1 << 8))
+	if (RepBits & 1 << 8)
 	{
 		Ar << bIsCriticalHit;
 	}
-	if (RepBits & (1 << 9))
+	if (RepBits & 1 << 9)
 	{
 		Ar << bDoesHitApplyDebuff;
 	}
-	if (RepBits & (1 << 10))
+	if (RepBits & 1 << 10)
 	{
 		Ar << DebuffDamage;
 	}
-	if (RepBits & (1 << 11))
+	if (RepBits & 1 << 11)
 	{
 		Ar << DebuffDuration;	
 	}
-	if (RepBits & (1 << 12))
+	if (RepBits & 1 << 12)
 	{
 		Ar << DebuffFrequency;
 	}
-	if (RepBits & (1 << 13))
+	if (RepBits & 1 << 13)
 	{
 		if (Ar.IsLoading())
 		{
@@ -144,9 +148,13 @@ bool FAuraGameplayEffectContext::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 		}
 		DamageType->NetSerialize(Ar, Map, bOutSuccess);
 	}
-	if (RepBits & (1 << 14))
+	if (RepBits & 1 << 14)
 	{
 		DeathImpulseDir.NetSerialize(Ar, Map, bOutSuccess);
+	}
+	if (RepBits & 1 << 15)
+	{
+		KnockbackForce.NetSerialize(Ar, Map, bOutSuccess);
 	}
 
 	if (Ar.IsLoading())

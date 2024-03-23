@@ -31,6 +31,9 @@ FDamageEffectParams UAuraDamageGameplayAbility::MakeDamageEffectParamsFromClassD
 	Params.DebuffDuration = DebuffDuration;
 	Params.DebuffFrequency = DebuffFrequency;
 
+	Params.TriggerKnockback = TriggerKnockback;
+	Params.KnockbackForceMagnitude = KnockbackForceMagnitude;
+
 	// Death Impulse is to be filled later, in AuraProjectile
 
 	Params.DeathImpulseMagnitude = DeathImpulseMagnitude;

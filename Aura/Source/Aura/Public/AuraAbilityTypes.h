@@ -44,6 +44,15 @@ struct FDamageEffectParams
 
 	UPROPERTY()
 	float DeathImpulseMagnitude = 0.f;
+	
+	UPROPERTY()
+	float KnockbackForceMagnitude = 0.f;
+
+	UPROPERTY()
+	bool TriggerKnockback = false;
+
+	UPROPERTY()
+	FVector KnockbackForce = FVector::ZeroVector;
 
 	UPROPERTY()
 	FVector DeathImpulseDir = FVector::ZeroVector;
@@ -68,12 +77,14 @@ struct FAuraGameplayEffectContext : public FGameplayEffectContext
 	float GetDebuffFrequency() const { return DebuffFrequency; }
 	const TSharedPtr<FGameplayTag>& GetDamageType() const { return DamageType; }
 	FVector GetDeathImpulse() const { return DeathImpulseDir; }
+	FVector GetKnockbackForce() const { return KnockbackForce; }
 
 	void SetDebuffDamage(const float InDebuffDamage) { DebuffDamage = InDebuffDamage; }
 	void SetDebuffDuration(const float InDebuffDuration) { DebuffDuration = InDebuffDuration; }
 	void SetDebuffFrequency(const float InDebuffFrequency) { DebuffFrequency = InDebuffFrequency; }
 	void SetDamageType(const TSharedPtr<FGameplayTag>& InDamageType) { DamageType = InDamageType; }
 	void SetDeathImpulse(const FVector& ImpulseDir) { DeathImpulseDir = ImpulseDir; }
+	void SetKnockbackForce(const FVector& ImpulseDir) { KnockbackForce = ImpulseDir; }
 	
 	/** Returns the actual struct used for serialization, subclasses must override this! */
 	virtual UScriptStruct* GetScriptStruct() const override
@@ -119,6 +130,9 @@ protected:
 
 	UPROPERTY()
 	FVector DeathImpulseDir = FVector::ZeroVector;
+
+	UPROPERTY()
+	FVector KnockbackForce = FVector::ZeroVector;
 };
 
 template <>

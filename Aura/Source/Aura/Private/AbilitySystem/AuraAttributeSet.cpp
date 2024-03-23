@@ -122,7 +122,7 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 		{
 			if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor))
 			{
-				FVector Impulse = UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle);
+				const FVector Impulse = UAuraAbilitySystemLibrary::GetDeathImpulse(Props.EffectContextHandle);
 				CombatInterface->Die(Impulse);
 			}
 			SendExpEvent(Props);
@@ -133,6 +133,13 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			// TODO: Remove this. Data.EffectSpec.GetAllAssetTags(TagContainer);
 			TagContainer.AddTag(FAuraGameplayTags::Get().Abilities_Stagger);
 			Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+
+			constexpr float Tolerance = 1.f;
+			if (const FVector& KnockbackForce = UAuraAbilitySystemLibrary::GetKnockbackForce(Props.EffectContextHandle); !KnockbackForce.IsNearlyZero(Tolerance))
+			{
+				Props.TargetCharacter->LaunchCharacter(KnockbackForce, true, true);
+			}
+
 		}
 
 		const bool bEvaded = UAuraAbilitySystemLibrary::IsEvadedHit(Props.EffectContextHandle);
