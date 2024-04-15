@@ -53,7 +53,7 @@ void AAuraCharacterBase::MulticastHandleDeath_Implementation(const FVector& Deat
 	Weapon->SetSimulatePhysics(true);
 	Weapon->SetEnableGravity(true);
 	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	Weapon->AddImpulse(DeathImpulse * 0.1, NAME_None, true);
+	Weapon->AddImpulse(DeathImpulse, NAME_None, true);
 
 	GetMesh()->SetSimulatePhysics(true);                              
 	GetMesh()->SetEnableGravity(true);                                

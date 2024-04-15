@@ -18,6 +18,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void CauseDamage(AActor* Target);
 
+	UFUNCTION(BlueprintPure)
 	FDamageEffectParams MakeDamageEffectParamsFromClassDefaults(AActor* TargetActor = nullptr) const;
 	
 protected:
@@ -46,5 +47,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float KnockbackForceMagnitude = 1000.f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	bool TriggerKnockback = false;
 };
