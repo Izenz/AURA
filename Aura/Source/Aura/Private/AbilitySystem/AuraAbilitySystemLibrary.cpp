@@ -247,10 +247,7 @@ FVector UAuraAbilitySystemLibrary::GetKnockbackForce(const FGameplayEffectContex
 {
 	if (const FAuraGameplayEffectContext* AuraEffectContext = static_cast<const FAuraGameplayEffectContext*>(EffectContextHandle.Get()))
 	{
-		if (AuraEffectContext->GetDamageType().IsValid())
-		{
-			return AuraEffectContext->GetKnockbackForce();
-		}
+		return AuraEffectContext->GetKnockbackForce();
 	}
 
 	return FVector();
