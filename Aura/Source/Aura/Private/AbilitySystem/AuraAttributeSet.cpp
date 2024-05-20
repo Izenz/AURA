@@ -140,8 +140,6 @@ void UAuraAttributeSet::HandleIncomingDamage(const FEffectProperties& Props)
 			{
 				Props.TargetCharacter->LaunchCharacter(KnockbackForce, true, true);
 			}
-			DrawDebugLine(Props.TargetCharacter->GetWorld(), Props.TargetCharacter->GetActorTransform().GetLocation(), KnockbackForce, FColor::Red, true, 10.f, 0, 5.0f);
-
 		}
 
 		const bool bEvaded = UAuraAbilitySystemLibrary::IsEvadedHit(Props.EffectContextHandle);
