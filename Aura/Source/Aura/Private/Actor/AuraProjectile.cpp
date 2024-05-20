@@ -55,6 +55,8 @@ void AAuraProjectile::Destroyed()
 		OnHit();
 	}
 	Super::Destroyed();
+
+	// TODO: See if we can destroy HomingTargetSceneComponent from here, to avoid relying on garbage collection for UObjects (slow)
 }
 
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent * OverlappedComponent,
