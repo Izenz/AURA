@@ -8,6 +8,7 @@
 #include "GameFramework/Character.h"
 #include "AuraPlayerController.generated.h"
 
+class UNiagaraSystem;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
@@ -86,5 +87,8 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UDamageTextComponent> DamageTextComponentClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UNiagaraSystem> ClickVfx;
 	
 };

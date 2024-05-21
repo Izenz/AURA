@@ -12,6 +12,7 @@
 #include "AuraGameplayTags.h"
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
+#include "NiagaraFunctionLibrary.h"
 #include "UI/Widget/DamageTextComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
@@ -20,7 +21,7 @@ AAuraPlayerController::AAuraPlayerController()
 	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
 }
 
-void AAuraPlayerController::PlayerTick(float DeltaTime)
+void AAuraPlayerController::PlayerTick(const float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 
@@ -145,6 +146,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
 		if (GetASC())	GetASC()->AbilityInputTagReleased(InputTag);
+		bAutoRunning = false;
 		return;
 	}
 
@@ -170,6 +172,7 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 					bAutoRunning = true;
 				}
 			}
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ClickVfx, CachedDestination);
 		}
 		FollowTime = 0.f;
 		bIsTargetting = false;
@@ -199,6 +202,7 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 
 		if (APawn* ControlledPawn = GetPawn())
 		{
+			bAutoRunning = false;
 			const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
 			ControlledPawn->AddMovementInput(WorldDirection);
 		}
