@@ -44,7 +44,12 @@ void AAuraProjectile::OnHit()
 {
 	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation(), FRotator::ZeroRotator);
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
-	if (LoopingSoundComponent) LoopingSoundComponent->Stop();
+	if (LoopingSoundComponent)
+	{
+		LoopingSoundComponent->Stop();
+		LoopingSoundComponent->DestroyComponent();
+	}
+	
 	bHit = true;
 }
 
@@ -54,8 +59,13 @@ void AAuraProjectile::Destroyed()
 	{
 		OnHit();
 	}
+	if (LoopingSoundComponent)
+	{
+		LoopingSoundComponent->Stop();
+		LoopingSoundComponent->DestroyComponent();
+	}
 	Super::Destroyed();
-
+	
 	// TODO: See if we can destroy HomingTargetSceneComponent from here, to avoid relying on garbage collection for UObjects (slow)
 }
 

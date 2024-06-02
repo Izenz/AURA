@@ -139,6 +139,7 @@ void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 		bIsTargetting = ThisActor ? true : false;
 		bAutoRunning = false;
 	}
+	if (GetASC())	GetASC()->AbilityInputTagPressed(InputTag);
 }
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
