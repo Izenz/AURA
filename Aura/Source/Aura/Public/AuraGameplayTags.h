@@ -65,7 +65,6 @@ public:
 	FGameplayTag Debuff_Frequency;
 	FGameplayTag Debuff_Duration;
 	
-
 	FGameplayTag Abilities_Attack;
 	FGameplayTag Abilities_Summon;
 	FGameplayTag Abilities_Stagger;
@@ -98,6 +97,11 @@ public:
 
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuffs;
+
+	FGameplayTag Player_Block_Input_Pressed;
+	FGameplayTag Player_Block_Input_Held;
+	FGameplayTag Player_Block_Input_Released;
+	FGameplayTag Player_Block_CursorTrace;
 
 private:
 	static FAuraGameplayTags Instance;
