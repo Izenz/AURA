@@ -161,6 +161,11 @@ FOnDeath AAuraCharacterBase::GetOnDeathDelegate()
 	return OnDeath;
 }
 
+USkeletalMeshComponent* AAuraCharacterBase::GetWeapon_Implementation()
+{
+	return Weapon;
+}
+
 void AAuraCharacterBase::InitDefaultAttributes() const
 {
 	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
