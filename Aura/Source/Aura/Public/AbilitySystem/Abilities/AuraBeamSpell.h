@@ -21,6 +21,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void StoreOwnerParams();
+
+	UFUNCTION(BlueprintCallable)
+	void TraceFrontmostTarget(const FVector& TargetLocation);
 	
 protected:
 
