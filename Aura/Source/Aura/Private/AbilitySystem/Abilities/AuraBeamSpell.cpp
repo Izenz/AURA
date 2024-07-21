@@ -2,6 +2,8 @@
 
 
 #include "AbilitySystem/Abilities/AuraBeamSpell.h"
+
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "GameFramework/Character.h"
 #include "Interaction/CombatInterface.h"
 #include "Kismet/KismetSystemLibrary.h"
@@ -9,6 +11,7 @@
 namespace
 {
 	constexpr float SPHERE_TRACE_RADIUS = 10.f;
+	constexpr float ADD_TARGET_RADIUS = 850.f;
 }
 
 void UAuraBeamSpell::StoreMouseDataInfo(const FHitResult HitResult)
@@ -55,4 +58,14 @@ void UAuraBeamSpell::TraceFrontmostTarget(const FVector& TargetLocation)
 			}
 		}
 	}
+}
+
+void UAuraBeamSpell::StoreAdditionalTargets(TArray<AActor*>& OutAdditionalTargets)
+{
+	TArray<AActor*> OverlappingActors;
+	TArray<AActor*> ActorsToIgnore {GetAvatarActorFromActorInfo(), TargetActor};
+	UAuraAbilitySystemLibrary::GetLivePlayersInRadius(GetAvatarActorFromActorInfo(), OverlappingActors, ActorsToIgnore, ADD_TARGET_RADIUS, TargetActor->GetActorLocation());
+
+	const int32 NumExtraTargets = FMath::Min(GetAbilityLevel() - 1, MaxTargets);
+	UAuraAbilitySystemLibrary::GetClosestTargets(TargetActor->GetActorLocation(), NumExtraTargets, OverlappingActors, OutAdditionalTargets);
 }

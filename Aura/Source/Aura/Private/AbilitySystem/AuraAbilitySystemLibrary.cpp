@@ -351,6 +351,41 @@ void UAuraAbilitySystemLibrary::GetLivePlayersInRadius(const UObject* WorldConte
 	}
 }
 
+void UAuraAbilitySystemLibrary::GetClosestTargets(const FVector& Origin, int32 MaxTargets,
+	const TArray<AActor*>& Actors, TArray<AActor*>& OutClosestTargets)
+{
+	// TODO: Use Djikstra´s algorithm
+	if (Actors.Num() < MaxTargets)
+	{
+		OutClosestTargets = Actors;
+		return;
+	}
+
+	TArray<AActor*> ActorsToCheck = Actors;
+	int32 TargetsFound = 0;
+
+	while(TargetsFound < MaxTargets)
+	{
+		if (ActorsToCheck.Num() < 1)	break;
+		
+		double ClosestDistance = TNumericLimits<double>::Max();
+		AActor* ClosestActor;
+		for (AActor* PotentialTarget : ActorsToCheck)
+		{
+			const double Distance = (PotentialTarget->GetActorLocation() - Origin).Length();
+			if (Distance < ClosestDistance)
+			{
+				ClosestDistance = Distance;
+				ClosestActor = PotentialTarget;
+			}
+		}
+		ActorsToCheck.Remove(ClosestActor);
+		OutClosestTargets.AddUnique(ClosestActor);
+		++TargetsFound;
+	}
+	
+}
+
 bool UAuraAbilitySystemLibrary::AreAllies(const AActor* FirstActor, const AActor* OtherActor)
 {
 	const bool BothPlayers = FirstActor->ActorHasTag(FName("Player")) && OtherActor->ActorHasTag(FName("Player"));
